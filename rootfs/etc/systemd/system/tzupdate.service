@@ -1,0 +1,10 @@
+[Unit]
+Description=Timezone Update Service
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/tzupdate
+
+[Install]
+WantedBy=multi-user.target
