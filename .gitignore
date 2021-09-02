@@ -1,9 +1,3 @@
-# suggested build result and log filenames
-hoobs*.bmap
-hoobs*.img
-hoobs*.img.xz
-hoobs*.log
-hoobs*.tar.gz
-hoobs*.sha256
-hoobs.yaml
-base.yaml
+*.log
+builds/
+cache/

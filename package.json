@@ -1,0 +1,16 @@
+{
+    "name": "hoobs-image",
+    "version": "4.1.0",
+    "description": "HOOBS OS Image Builder",
+    "license": "GPL-3.0",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/hoobs-org/image.git"
+    },
+    "bugs": {
+        "url": "https://github.com/hoobs-org/image/issues"
+    },
+    "author": {
+        "name": "Michael J Kellsy"
+    }
+}

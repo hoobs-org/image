@@ -1,0 +1,34 @@
+#!/bin/bash
+
+version() {
+    echo `node -e 'console.log(require("./package.json").version)'`
+}
+
+build() {
+    touch build.log
+    truncate -s 0 build.log
+
+    make hoobs-box-version-arm64.img.xz.sha256
+    make hoobs-version-arm64.img.xz.sha256
+}
+
+rebuild() {
+    make clean
+    build
+}
+
+case $1 in
+    version )  version
+               ;;
+
+    build )    build
+               ;;
+
+    rebuild )  rebuild
+               ;;
+
+    clean )    make clean
+               ;;
+
+    * )        ;;
+esac

@@ -215,11 +215,19 @@ steps:
   - cache-rootfs: /
     unless: rootfs_unpacked
 
+  - create-file: /etc/hoobs
+    contents: |
+      ID=__VENDOR_ID__
+      MODEL=__VENDOR_MODEL__
+      SKU=__VENDOR_SKU__
+
+  - apt: install
+    packages:
+    - hbs-portal
+    tag: /
+
   - shell: |
       sed -i 's,root:[^:]*:,root::,' "${ROOT?}/etc/shadow"
-
-      systemctl disable dnsmasq
-      systemctl disable hostapd
 
       mkdir -p "${ROOT?}/etc/systemd/system/basic.target.requires/"
       mkdir -p "${ROOT?}/etc/systemd/system/multi-user.target.requires/"
