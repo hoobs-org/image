@@ -12,11 +12,8 @@ yaml: $(addsuffix .yaml,$(platforms))
 
 ifeq ($(shell id -u),0)
 	as_root = 
-else ifneq (,$(wildcard /usr/bin/fakemachine))
-	$(warning "This should normally be run as root, but found 'fakemachine', so using that.")
-	as_root = fakemachine -v $(CURDIR) -- env --chdir $(CURDIR)
 else
-	$(error "This must be run as root")
+	as_root = sudo
 endif
 
 target_platforms:

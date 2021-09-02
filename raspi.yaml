@@ -110,20 +110,18 @@ steps:
 
   - chroot: /
     shell: |
-      wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-      wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+      curl -s https://dl.hoobs.org/debian/pubkey.gpg.key | gpg --dearmor | tee /usr/share/keyrings/hoobs.gpg > /dev/null
+      curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarn.gpg > /dev/null
     unless: rootfs_unpacked
 
-  - create-file: /etc/apt/sources.list.d/nodesource.list
-    trailing-newline: '1'
+  - create-file: /etc/apt/sources.list.d/hoobs.list
     contents: |
-      deb https://deb.nodesource.com/node_14.x __RELEASE__ main
+      deb [signed-by=/usr/share/keyrings/hoobs.gpg] https://dl.hoobs.org/debian/ stable main
     unless: rootfs_unpacked
 
   - create-file: /etc/apt/sources.list.d/yarn.list
-    trailing-newline: '1'
     contents: |
-      deb https://dl.yarnpkg.com/debian stable main
+      deb [signed-by=/usr/share/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian stable main
     unless: rootfs_unpacked
 
   - chroot: /
