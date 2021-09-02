@@ -56,6 +56,7 @@ hoobs-version-arm64.yaml:
 %.img.xz: paths %.img
 	$(eval NAME := $(subst -version-,-v$(VERSION)-,$@))
 	xz -f -k -z -9 builds/$(subst .img.xz,.img,$(NAME))
+	rm -f builds/$(subst .img.xz,.img,$(NAME))
 	mv builds/$(NAME) builds/$(subst .img.xz,.xz,$(NAME))
 
 %.img: paths %.yaml
