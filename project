@@ -25,8 +25,25 @@ build() {
     touch build.log
     truncate -s 0 build.log
 
-    image "hoobs-box" "arm64"
-    image "hoobs" "arm64"
+    case $1 in
+        box )    image "hoobs-box" "arm64"
+                 ;;
+
+        arm64 )  image "hoobs" "arm64"
+                 ;;
+
+        armhf )  image "hoobs" "armhf"
+                 ;;
+
+        armel )  image "hoobs" "armel"
+                 ;;
+
+        * )      image "hoobs-box" "arm64"
+                 image "hoobs" "arm64"
+                 image "hoobs" "armhf"
+                 image "hoobs" "armel"
+                 ;;
+    esac
 }
 
 rebuild() {
