@@ -1,6 +1,3 @@
-USER=`whoami`
-VERSION=`node -e 'console.log(require("./package.json").version)'`
-
 ifeq ($(shell id -u),0)
 	as_root = 
 else
@@ -50,27 +47,27 @@ hoobs-version-arm64.yaml:
 	grep -v '__EXTRA_SHELL_CMDS__' > cache/$(subst -version-,-,$@)
 
 %.img.xz.sha256: paths %.img.xz
-	$(eval NAME := $(subst -version-,-v$(VERSION)-,$@))
+	$(eval NAME := $(subst -version-,-v$(shell project version)-,$@))
 	(cd builds && sha256sum $(subst .img.xz.sha256,.xz,$(NAME)) > $(subst .img.xz.sha256,.sha256,$(NAME)))
 
 %.img.xz: paths %.img
-	$(eval NAME := $(subst -version-,-v$(VERSION)-,$@))
+	$(eval NAME := $(subst -version-,-v$(shell project version)-,$@))
 	xz -f -k -z -9 builds/$(subst .img.xz,.img,$(NAME))
 	rm -f builds/$(subst .img.xz,.img,$(NAME))
 	mv builds/$(NAME) builds/$(subst .img.xz,.xz,$(NAME))
 
 %.img: paths %.yaml
 	$(eval BASE := $(subst -version-,-,$@))
-	$(eval NAME := $(subst -version-,-v$(VERSION)-,$@))
+	$(eval NAME := $(subst -version-,-v$(shell project version)-,$@))
 	$(eval CACHE := $(subst .img,.tar.gz,$(BASE)))
 	$(eval CACHE := $(subst hoobs-,,$(CACHE)))
 	$(eval CACHE := $(subst box-,,$(CACHE)))
 	time nice $(as_root) vmdb2 --verbose --rootfs-tarball=cache/$(CACHE) --output=builds/$(NAME) cache/$(subst .img,.yaml,$(BASE)) --log build.log
 	rm -f cache/$(subst .img,.yaml,$(BASE))
-	$(as_root) chown ${USER}:${USER} builds/$(NAME)
+	$(as_root) chown $(shell whoami):$(shell whoami) builds/$(NAME)
 
 paths:
-	@echo $(VERSION)
+	@echo $(shell project version)
 	touch build.log
 	mkdir -p builds
 	mkdir -p cache
