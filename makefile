@@ -51,7 +51,7 @@ hoobs-version-arm64.yaml:
 
 %.img.xz.sha256: paths %.img.xz
 	$(eval NAME := $(subst -version-,-v$(VERSION)-,$@))
-	sha256sum builds/$(subst .img.xz.sha256,.xz,$(NAME)) > builds/$(subst .img.xz.sha256,.sha256,$(NAME))
+	(cd builds && sha256sum $(subst .img.xz.sha256,.xz,$(NAME)) > $(subst .img.xz.sha256,.sha256,$(NAME)))
 
 %.img.xz: paths %.img
 	$(eval NAME := $(subst -version-,-v$(VERSION)-,$@))
