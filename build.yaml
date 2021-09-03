@@ -223,6 +223,8 @@ steps:
 
   - apt: install
     packages:
+    - nodejs
+    - yarn
     - hbs-portal
     tag: /
 

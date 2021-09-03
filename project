@@ -1,15 +1,32 @@
 #!/bin/bash
 
+COUNT=0
+
 version() {
     echo `node -e 'console.log(require("./package.json").version)'`
+}
+
+image() {
+    if [[ $COUNT -gt 0 ]] ; then
+        echo "" >> build.log
+    fi
+
+    echo "$1 - $2 - $(date)" >> build.log
+    echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" >> build.log
+
+    make $1-version-$2.img.xz.sha256
+
+    echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" >> build.log
+
+    COUNT=$((COUNT+1))
 }
 
 build() {
     touch build.log
     truncate -s 0 build.log
 
-    make hoobs-box-version-arm64.img.xz.sha256
-    make hoobs-version-arm64.img.xz.sha256
+    image "hoobs-box" "arm64"
+    image "hoobs" "arm64"
 }
 
 rebuild() {
