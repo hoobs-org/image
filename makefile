@@ -49,7 +49,7 @@ hoobs-version-armel.yaml:
 	sed "s/__RELEASE__/bullseye/" | \
 	sed "s/__SECURITY_SUITE__/bullseye-security/" | \
 	sed "s/__ARCH__/armel/" | \
-	sed "s/__EXTRA_ARCH__/armhf/" | \
+	grep -v "__EXTRA_ARCH__" | \
 	sed "s/__LINUX_IMAGE__/linux-image-rpi/" | \
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-rpi\\/bcm*rpi-*.dtb/" | \
 	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" | \
