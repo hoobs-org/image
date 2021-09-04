@@ -242,15 +242,15 @@ steps:
 
   - chroot: /
     shell: |
-      mkdir -p "${ROOT?}/etc/systemd/system/multi-user.target.wants/"
+      mkdir -p /etc/systemd/system/multi-user.target.wants
 
-      rm -f "${ROOT?}/etc/systemd/system/multi-user.target.wants/hbs-portal.service"
-      rm -f "${ROOT?}/etc/systemd/system/multi-user.target.wants/tzupdate.service"
-      rm -f "${ROOT?}/etc/systemd/system/multi-user.target.wants/hostapd.service"
-      rm -f "${ROOT?}/etc/systemd/system/multi-user.target.wants/dnsmasq.service"
+      rm -f /etc/systemd/system/multi-user.target.wants/hbs-portal.service
+      rm -f /etc/systemd/system/multi-user.target.wants/tzupdate.service
+      rm -f /etc/systemd/system/multi-user.target.wants/hostapd.service
+      rm -f /etc/systemd/system/multi-user.target.wants/dnsmasq.service
 
-      ln -s /lib/systemd/system/hbs-portal.service "${ROOT?}/etc/systemd/system/multi-user.target.wants/hbs-portal.service"
-      ln -s /lib/systemd/system/tzupdate.service "${ROOT?}/etc/systemd/system/multi-user.target.wants/tzupdate.service"
+      ln -s /lib/systemd/system/hbs-portal.service /etc/systemd/system/multi-user.target.wants/hbs-portal.service
+      ln -s /lib/systemd/system/tzupdate.service /etc/systemd/system/multi-user.target.wants/tzupdate.service
 
   - shell: |
       sed -i 's,root:[^:]*:,root::,' "${ROOT?}/etc/shadow"
