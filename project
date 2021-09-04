@@ -35,7 +35,7 @@ build() {
         box )    image "hoobs-box" "arm64"
                  ;;
 
-        arm64 )  image "hoobs" "arm64"
+        card )  image "hoobs" "arm64"
                  ;;
 
         armhf )  image "hoobs" "armhf"
@@ -47,7 +47,6 @@ build() {
         * )      image "hoobs-box" "arm64"
                  image "hoobs" "arm64"
                  image "hoobs" "armhf"
-                 image "hoobs" "armel"
                  ;;
     esac
 }
