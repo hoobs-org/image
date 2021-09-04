@@ -22,11 +22,11 @@ steps:
 
   - mkfs: vfat
     partition: /boot
-    label: RASPIFIRM
+    label: HOOBSFIRM
 
   - mkfs: ext4
     partition: /
-    label: RASPIROOT
+    label: HOOBSROOT
 
   - mount: /
 
@@ -65,6 +65,7 @@ steps:
 
   - chroot: /
     shell: |
+      dpkg --add-architecture __EXTRA_ARCH__
       apt-get update
     unless: rootfs_unpacked
 
@@ -88,8 +89,11 @@ steps:
     - avahi-utils
     - dnsmasq
     - hostapd
+    - raspi-firmware
     - firmware-brcm80211
-    - __FIRMWARE_PKG__
+    - libc6:__EXTRA_ARCH__
+    - libatomic1:__EXTRA_ARCH__
+    - libstdc++6:__EXTRA_ARCH__
     - __LINUX_IMAGE__
     tag: /
     unless: rootfs_unpacked
@@ -144,7 +148,7 @@ steps:
   - create-file: /etc/hostname
     trailing-newline: '1'
     contents: |
-      __HOST__
+      hoobs
     unless: rootfs_unpacked
 
   - copy-file: /etc/fstab
@@ -228,6 +232,11 @@ steps:
     - hbs-portal
     tag: /
 
+  - chroot: /
+    shell: |
+      node -v
+      npm -v
+
   - copy-file: /usr/lib/systemd/system/hbs-portal.service
     src: rootfs/usr/lib/systemd/system/hbs-portal.service
 
@@ -267,7 +276,7 @@ steps:
   - chroot: /
     shell: |
       sed -i 's/^/console=__SERIAL_CONSOLE__ /' /boot/firmware/cmdline.txt
-      sed -i 's/.dev.mmcblk0p2/LABEL=RASPIROOT/' /boot/firmware/cmdline.txt
+      sed -i 's/.dev.mmcblk0p2/LABEL=HOOBSROOT/' /boot/firmware/cmdline.txt
 
   - shell: |
       rm "${ROOT?}/etc/resolv.conf"
@@ -279,8 +288,8 @@ steps:
 
   - chroot: /
     shell: |
-      adduser --gecos __GIT_USER__ --disabled-password __FIRST_USER__
-      adduser __FIRST_USER__ sudo
-      echo "__FIRST_USER__:__FIRST_USER_PASSWD__" | chpasswd
+      adduser --gecos hoobs --disabled-password hoobs
+      adduser hoobs sudo
+      echo "hoobs:hoobsadmin" | chpasswd
 
       passwd -l root
