@@ -232,11 +232,6 @@ steps:
     - hbs-portal
     tag: /
 
-  - chroot: /
-    shell: |
-      node -v
-      npm -v
-
   - copy-file: /usr/lib/systemd/system/hbs-portal.service
     src: rootfs/usr/lib/systemd/system/hbs-portal.service
 
