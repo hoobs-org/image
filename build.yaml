@@ -193,7 +193,7 @@ steps:
       curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarn.gpg > /dev/null
       curl -s https://dl.hoobs.org/debian/pubkey.gpg.key | gpg --dearmor | tee /usr/share/keyrings/hoobs.gpg > /dev/null
 
-  - create-file: /etc/apt/sources.list.d/yarn.list
+  - create-file: /etc/apt/sources.list.d/nodesource.list
     contents: |
       deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/__NODE_REPO__ __RELEASE__ main
       deb-src [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/__NODE_REPO__ __RELEASE__ main
