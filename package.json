@@ -3,6 +3,9 @@
     "version": "4.1.0",
     "description": "HOOBS OS Image Builder",
     "license": "GPL-3.0",
+    "engines": {
+        "nodesource": "node_14.x"
+    },
     "repository": {
         "type": "git",
         "url": "git://github.com/hoobs-org/image.git"

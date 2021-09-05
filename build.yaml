@@ -65,7 +65,6 @@ steps:
 
   - chroot: /
     shell: |
-      dpkg --add-architecture __EXTRA_ARCH__
       apt-get update
     unless: rootfs_unpacked
 
@@ -82,6 +81,11 @@ steps:
     - wget
     - curl
     - nano
+    - tar
+    - git
+    - make
+    - gcc
+    - g++
     - bluetooth
     - wpasupplicant
     - network-manager
@@ -91,9 +95,6 @@ steps:
     - hostapd
     - raspi-firmware
     - firmware-brcm80211
-    - libc6:__EXTRA_ARCH__
-    - libatomic1:__EXTRA_ARCH__
-    - libstdc++6:__EXTRA_ARCH__
     - __LINUX_IMAGE__
     tag: /
     unless: rootfs_unpacked
@@ -109,39 +110,6 @@ steps:
     - python3-rpi.gpio
     - python3-smbus
     - lirc
-    tag: /
-    unless: rootfs_unpacked
-
-  - chroot: /
-    shell: |
-      curl -s https://dl.hoobs.org/debian/pubkey.gpg.key | gpg --dearmor | tee /usr/share/keyrings/hoobs.gpg > /dev/null
-      curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarn.gpg > /dev/null
-    unless: rootfs_unpacked
-
-  - create-file: /etc/apt/sources.list.d/hoobs.list
-    contents: |
-      deb [signed-by=/usr/share/keyrings/hoobs.gpg] https://dl.hoobs.org/debian/ stable main
-    unless: rootfs_unpacked
-
-  - create-file: /etc/apt/sources.list.d/yarn.list
-    contents: |
-      deb [signed-by=/usr/share/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian stable main
-    unless: rootfs_unpacked
-
-  - chroot: /
-    shell: |
-      apt-get update
-    unless: rootfs_unpacked
-
-  - apt: install
-    packages:
-    - tar
-    - git
-    - make
-    - gcc
-    - g++
-    - nodejs
-    - yarn
     tag: /
     unless: rootfs_unpacked
 
@@ -218,6 +186,29 @@ steps:
 
   - cache-rootfs: /
     unless: rootfs_unpacked
+
+  - chroot: /
+    shell: |
+      curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | tee /usr/share/keyrings/nodesource.gpg > /dev/null
+      curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarn.gpg > /dev/null
+      curl -s https://dl.hoobs.org/debian/pubkey.gpg.key | gpg --dearmor | tee /usr/share/keyrings/hoobs.gpg > /dev/null
+
+  - create-file: /etc/apt/sources.list.d/yarn.list
+    contents: |
+      deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/__NODE_REPO__ __RELEASE__ main
+      deb-src [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/__NODE_REPO__ __RELEASE__ main
+
+  - create-file: /etc/apt/sources.list.d/yarn.list
+    contents: |
+      deb [signed-by=/usr/share/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian stable main
+
+  - create-file: /etc/apt/sources.list.d/hoobs.list
+    contents: |
+      deb [signed-by=/usr/share/keyrings/hoobs.gpg] https://dl.hoobs.org/debian/ stable main
+
+  - chroot: /
+    shell: |
+      apt-get update
 
   - create-file: /etc/hoobs
     contents: |
