@@ -220,6 +220,7 @@ steps:
     packages:
     - nodejs
     - yarn
+    - helm
     - hbs-portal
     tag: /
 

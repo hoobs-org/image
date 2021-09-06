@@ -1,7 +1,7 @@
 [Unit]
 Description=Capitive WiFi Portal
 After=NetworkManager.service
-Before=tzupdate.service hoobsd.service
+Before=tzupdate.service helm.service hoobsd.service
 
 [Service]
 Type=oneshot
