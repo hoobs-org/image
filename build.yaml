@@ -283,6 +283,6 @@ steps:
     shell: |
       adduser --gecos hoobs --disabled-password hoobs
       adduser hoobs sudo
-      echo "hoobs:hoobsadmin" | chpasswd
-
+      echo "hoobs:hoobs" | chpasswd
+      passwd --expire hoobs
       passwd -l root
