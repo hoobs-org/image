@@ -64,7 +64,6 @@ hoobs-version-armhf.yaml:
 	$(as_root) chown $(shell whoami):$(shell whoami) builds/$(NAME)
 
 paths:
-	@echo $(shell project version)
 	touch build.log
 	mkdir -p builds
 	mkdir -p cache
