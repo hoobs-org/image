@@ -4,11 +4,13 @@ COUNT=0
 
 version() {
     case $1 in
-        nodesource )  echo `node -e 'console.log(require("./package.json").engines.nodesource)'`
-                      ;;
+        nodesource )
+            echo `node -e 'console.log(require("./package.json").engines.nodesource)'`
+            ;;
 
-        * )           echo `node -e 'console.log(require("./package.json").version)'`
-                      ;;
+        * )
+            echo `node -e 'console.log(require("./package.json").version)'`
+            ;;
     esac
 }
 
@@ -32,19 +34,23 @@ build() {
     truncate -s 0 build.log
 
     case $1 in
-        box )     image "hoobs-box" "arm64"
-                  ;;
+        box )
+            image "hoobs-box" "arm64"
+            ;;
 
-        card )    image "hoobs" "arm64"
-                  ;;
+        card )
+            image "hoobs" "arm64"
+            ;;
 
-        legacy )  image "hoobs" "armhf"
-                  ;;
+        legacy )
+            image "hoobs" "armhf"
+            ;;
 
-        * )       image "hoobs-box" "arm64"
-                  image "hoobs" "arm64"
-                  image "hoobs" "armhf"
-                  ;;
+        * )
+            image "hoobs-box" "arm64"
+            image "hoobs" "arm64"
+            image "hoobs" "armhf"
+            ;;
     esac
 }
 
@@ -54,17 +60,19 @@ rebuild() {
 }
 
 case $1 in
-    version )  version $2
-               ;;
+    version )
+        version $2
+        ;;
 
-    build )    build $2
-               ;;
+    build )
+        build $2
+        ;;
 
-    rebuild )  rebuild
-               ;;
+    rebuild )
+        rebuild
+        ;;
 
-    clean )    make clean
-               ;;
-
-    * )        ;;
+    clean )
+        make clean
+        ;;
 esac
