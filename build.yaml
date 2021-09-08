@@ -222,10 +222,20 @@ steps:
     - yarn
     - helm
     - hbs-portal
+    - hoobs-cli
+    - hoobsd
+    - hoobs-gui
+    - ffmpeg
     tag: /
 
   - copy-file: /usr/lib/systemd/system/hbs-portal.service
     src: rootfs/usr/lib/systemd/system/hbs-portal.service
+
+  - copy-file: /etc/systemd/system/hoobsd.service
+    src: rootfs/etc/systemd/system/hoobsd.service
+
+  - copy-file: /var/lib/hoobs/bridges.conf
+    src: rootfs/var/lib/hoobs/bridges.conf
 
   - chroot: /
     shell: |
@@ -236,6 +246,7 @@ steps:
       rm -f /etc/systemd/system/multi-user.target.wants/hostapd.service
       rm -f /etc/systemd/system/multi-user.target.wants/dnsmasq.service
 
+      ln -s /etc/systemd/system/hoobsd.service /etc/systemd/system/multi-user.target.wants/hoobsd.service
       ln -s /lib/systemd/system/hbs-portal.service /etc/systemd/system/multi-user.target.wants/hbs-portal.service
       ln -s /lib/systemd/system/tzupdate.service /etc/systemd/system/multi-user.target.wants/tzupdate.service
 
