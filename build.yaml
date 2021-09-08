@@ -121,67 +121,77 @@ steps:
 
   - copy-file: /etc/fstab
     src: rootfs/etc/fstab
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /etc/issue
     src: rootfs/etc/issue
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /etc/motd
     src: rootfs/etc/motd
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /etc/update-motd.d/10-uname
     src: rootfs/etc/update-motd.d/10-uname
-    perm: 755
+    perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /etc/update-motd.d/20-network
     src: rootfs/etc/update-motd.d/20-network
-    perm: 755
+    perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /etc/sudoers
     src: rootfs/etc/sudoers
-    perm: 440
+    perm: 0440
     unless: rootfs_unpacked
 
   - copy-file: /usr/sbin/rpi-set-sysconf
     src: rootfs/usr/sbin/rpi-set-sysconf
-    perm: 755
+    perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /boot/firmware/sysconf.txt
     src: rootfs/boot/firmware/sysconf.txt
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /usr/lib/python3.9/tzupdate.py
     src: rootfs/usr/lib/python3.9/tzupdate.py
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /usr/bin/tzupdate
     src: rootfs/usr/bin/tzupdate
-    perm: 755
+    perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /etc/systemd/resolved.conf
     src: rootfs/etc/systemd/resolved.conf
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /etc/systemd/system/rpi-set-sysconf.service
     src: rootfs/etc/systemd/system/rpi-set-sysconf.service
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /etc/systemd/system/rpi-reconfigure-raspi-firmware.service
     src: rootfs/etc/systemd/system/rpi-reconfigure-raspi-firmware.service
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /etc/systemd/system/rpi-generate-ssh-host-keys.service
     src: rootfs/etc/systemd/system/rpi-generate-ssh-host-keys.service
+    perm: 0644
     unless: rootfs_unpacked
 
   - copy-file: /usr/lib/systemd/system/tzupdate.service
     src: rootfs/usr/lib/systemd/system/tzupdate.service
+    perm: 0644
     unless: rootfs_unpacked
 
   - cache-rootfs: /
@@ -230,12 +240,18 @@ steps:
 
   - copy-file: /usr/lib/systemd/system/hbs-portal.service
     src: rootfs/usr/lib/systemd/system/hbs-portal.service
+    perm: 0644
 
   - copy-file: /etc/systemd/system/hoobsd.service
     src: rootfs/etc/systemd/system/hoobsd.service
+    perm: 0644
+
+  - create-dir: /var/lib/hoobs
+    perm: 0755
 
   - copy-file: /var/lib/hoobs/bridges.conf
     src: rootfs/var/lib/hoobs/bridges.conf
+    perm: 0644
 
   - chroot: /
     shell: |
