@@ -24,9 +24,10 @@ steps:
     partition: /boot
     label: HOOBSFIRM
 
-  - mkfs: ext4
+  - mkfs: f2fs
     partition: /
     label: HOOBSROOT
+    options: -f
 
   - mount: /
 
@@ -74,6 +75,7 @@ steps:
     - less
     - ca-certificates
     - dosfstools
+    - f2fs-tools
     - iw
     - parted
     - ssh
@@ -113,35 +115,9 @@ steps:
     tag: /
     unless: rootfs_unpacked
 
-  - create-file: /etc/hostname
-    trailing-newline: '1'
-    contents: |
-      hoobs
-    unless: rootfs_unpacked
-
   - copy-file: /etc/fstab
     src: rootfs/etc/fstab
     perm: 0644
-    unless: rootfs_unpacked
-
-  - copy-file: /etc/issue
-    src: rootfs/etc/issue
-    perm: 0644
-    unless: rootfs_unpacked
-
-  - copy-file: /etc/motd
-    src: rootfs/etc/motd
-    perm: 0644
-    unless: rootfs_unpacked
-
-  - copy-file: /etc/update-motd.d/10-uname
-    src: rootfs/etc/update-motd.d/10-uname
-    perm: 0755
-    unless: rootfs_unpacked
-
-  - copy-file: /etc/update-motd.d/20-network
-    src: rootfs/etc/update-motd.d/20-network
-    perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /etc/sudoers
@@ -157,16 +133,6 @@ steps:
   - copy-file: /boot/firmware/sysconf.txt
     src: rootfs/boot/firmware/sysconf.txt
     perm: 0644
-    unless: rootfs_unpacked
-
-  - copy-file: /usr/lib/python3.9/tzupdate.py
-    src: rootfs/usr/lib/python3.9/tzupdate.py
-    perm: 0644
-    unless: rootfs_unpacked
-
-  - copy-file: /usr/bin/tzupdate
-    src: rootfs/usr/bin/tzupdate
-    perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /etc/systemd/resolved.conf
@@ -189,13 +155,41 @@ steps:
     perm: 0644
     unless: rootfs_unpacked
 
+  - cache-rootfs: /
+    unless: rootfs_unpacked
+
+  - create-file: /etc/hostname
+    trailing-newline: '1'
+    contents: |
+      hoobs
+
+  - copy-file: /etc/issue
+    src: rootfs/etc/issue
+    perm: 0644
+
+  - copy-file: /etc/motd
+    src: rootfs/etc/motd
+    perm: 0644
+
+  - copy-file: /etc/update-motd.d/10-uname
+    src: rootfs/etc/update-motd.d/10-uname
+    perm: 0755
+
+  - copy-file: /etc/update-motd.d/20-network
+    src: rootfs/etc/update-motd.d/20-network
+    perm: 0755
+
+  - copy-file: /usr/lib/python3.9/tzupdate.py
+    src: rootfs/usr/lib/python3.9/tzupdate.py
+    perm: 0644
+
+  - copy-file: /usr/bin/tzupdate
+    src: rootfs/usr/bin/tzupdate
+    perm: 0755
+
   - copy-file: /usr/lib/systemd/system/tzupdate.service
     src: rootfs/usr/lib/systemd/system/tzupdate.service
     perm: 0644
-    unless: rootfs_unpacked
-
-  - cache-rootfs: /
-    unless: rootfs_unpacked
 
   - chroot: /
     shell: |
