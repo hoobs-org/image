@@ -15,7 +15,7 @@ set -- ${cmappings[0]}
 cboot="$3"
 sudo dd if=/dev/mapper/${rboot?} of=/dev/mapper/${cboot?} bs=5M status=none
 
-# copy the f2fs root partition in a space-saving way
+# copy the ext4 root partition in a space-saving way
 set -- ${rmappings[1]}
 rroot="$3"
 set -- ${cmappings[1]}

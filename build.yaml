@@ -24,10 +24,9 @@ steps:
     partition: /boot
     label: HOOBSFIRM
 
-  - mkfs: f2fs
+  - mkfs: ext4
     partition: /
     label: HOOBSROOT
-    options: -f
 
   - mount: /
 
@@ -75,7 +74,6 @@ steps:
     - less
     - ca-certificates
     - dosfstools
-    - f2fs-tools
     - iw
     - parted
     - ssh
