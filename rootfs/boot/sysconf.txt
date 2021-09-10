@@ -3,12 +3,12 @@
 #
 # To force it to be evaluated immediately, you can run (as root):
 #
-#     /usr/sbin/rpi-set-sysconf
+#     /usr/sbin/update-sysconf
 #
-# You can disable the file evaluation by disabling the rpi-set-sysconf
+# You can disable the file evaluation by disabling the sysconf
 # service in systemd:
 #
-#     systemctl disable rpi-set-sysconf
+#     systemctl disable sysconf
 #
 # Comments (all portions of a line following a '#' character) are
 # ignored. This file is read line by line. Valid

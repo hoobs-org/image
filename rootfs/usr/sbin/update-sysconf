@@ -96,7 +96,7 @@ sub read_conf {
 sub logger {
     my ($prio, $msg) = @_;
     system('logger', '-p', "daemon.$prio",
-	   '-t', 'rpi-set-sysconf', $msg);
+	   '-t', 'update-sysconf', $msg);
 }
 
 sub rewrite_conf_file {
@@ -113,12 +113,12 @@ q(# This file will be automatically evaluated and installed at next boot
 #
 # To force it to be evaluated immediately, you can run (as root):
 #
-#     /usr/sbin/rpi-set-sysconf
+#     /usr/sbin/update-sysconf
 #
-# You can disable the file evaluation by disabling the rpi-set-sysconf
+# You can disable the file evaluation by disabling the sysconf
 # service in systemd:
 #
-#     systemctl disable rpi-set-sysconf
+#     systemctl disable sysconf
 #
 # Comments (all portions of a line following a '#' character) are
 # ignored. This file is read line by line. Valid

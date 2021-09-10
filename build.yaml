@@ -53,13 +53,13 @@ steps:
       deb http://security.debian.org/debian-security __SECURITY_SUITE__ main contrib non-free
     unless: rootfs_unpacked
 
-  - copy-file: /etc/initramfs-tools/hooks/rpi-resizerootfs
-    src: rootfs/etc/initramfs-tools/hooks/rpi-resizerootfs
+  - copy-file: /etc/initramfs-tools/hooks/resizerootfs
+    src: rootfs/etc/initramfs-tools/hooks/resizerootfs
     perm: 0755
     unless: rootfs_unpacked
 
-  - copy-file: /etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
-    src: rootfs/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs
+  - copy-file: /etc/initramfs-tools/scripts/local-bottom/resizerootfs
+    src: rootfs/etc/initramfs-tools/scripts/resizerootfs
     perm: 0755
     unless: rootfs_unpacked
 
@@ -123,13 +123,13 @@ steps:
     perm: 0440
     unless: rootfs_unpacked
 
-  - copy-file: /usr/sbin/rpi-set-sysconf
-    src: rootfs/usr/sbin/rpi-set-sysconf
+  - copy-file: /usr/sbin/update-sysconf
+    src: rootfs/usr/sbin/update-sysconf
     perm: 0755
     unless: rootfs_unpacked
 
   - copy-file: /boot/firmware/sysconf.txt
-    src: rootfs/boot/firmware/sysconf.txt
+    src: rootfs/boot/sysconf.txt
     perm: 0644
     unless: rootfs_unpacked
 
@@ -138,18 +138,18 @@ steps:
     perm: 0644
     unless: rootfs_unpacked
 
-  - copy-file: /etc/systemd/system/rpi-set-sysconf.service
-    src: rootfs/etc/systemd/system/rpi-set-sysconf.service
+  - copy-file: /etc/systemd/system/sysconf.service
+    src: rootfs/etc/systemd/system/sysconf.service
     perm: 0644
     unless: rootfs_unpacked
 
-  - copy-file: /etc/systemd/system/rpi-reconfigure-raspi-firmware.service
-    src: rootfs/etc/systemd/system/rpi-reconfigure-raspi-firmware.service
+  - copy-file: /etc/systemd/system/firmware.service
+    src: rootfs/etc/systemd/system/firmware.service
     perm: 0644
     unless: rootfs_unpacked
 
-  - copy-file: /etc/systemd/system/rpi-generate-ssh-host-keys.service
-    src: rootfs/etc/systemd/system/rpi-generate-ssh-host-keys.service
+  - copy-file: /etc/systemd/system/openssh-keys.service
+    src: rootfs/etc/systemd/system/openssh-keys.service
     perm: 0644
     unless: rootfs_unpacked
 
@@ -186,7 +186,7 @@ steps:
     perm: 0755
 
   - copy-file: /usr/lib/systemd/system/tzupdate.service
-    src: rootfs/usr/lib/systemd/system/tzupdate.service
+    src: rootfs/usr/lib/systemd/tzupdate.service
     perm: 0644
 
   - chroot: /
@@ -231,7 +231,7 @@ steps:
     tag: /
 
   - copy-file: /usr/lib/systemd/system/hbs-portal.service
-    src: rootfs/usr/lib/systemd/system/hbs-portal.service
+    src: rootfs/usr/lib/systemd/hbs-portal.service
     perm: 0644
 
   - copy-file: /etc/systemd/system/hoobsd.service
@@ -242,7 +242,7 @@ steps:
     perm: 0755
 
   - copy-file: /var/lib/hoobs/bridges.conf
-    src: rootfs/var/lib/hoobs/bridges.conf
+    src: rootfs/var/bridges.conf
     perm: 0644
 
   - chroot: /
@@ -264,14 +264,14 @@ steps:
       mkdir -p "${ROOT?}/etc/systemd/system/basic.target.requires/"
       mkdir -p "${ROOT?}/etc/systemd/system/multi-user.target.requires/"
 
-      ln -s /etc/systemd/system/rpi-set-sysconf.service "${ROOT?}/etc/systemd/system/basic.target.requires/rpi-set-sysconf.service"
+      ln -s /etc/systemd/system/sysconf.service "${ROOT?}/etc/systemd/system/basic.target.requires/sysconf.service"
       ln -sf /run/systemd/resolve/resolv.conf "${ROOT?}/etc/resolv.conf"
 
-      rm -f "${ROOT?}/etc/initramfs-tools/hooks/rpi-resizerootfs"
-      rm -f "${ROOT?}/etc/initramfs-tools/scripts/local-bottom/rpi-resizerootfs"
+      rm -f "${ROOT?}/etc/initramfs-tools/hooks/resizerootfs"
+      rm -f "${ROOT?}/etc/initramfs-tools/scripts/local-bottom/resizerootfs"
 
-      ln -s /etc/systemd/system/rpi-reconfigure-raspi-firmware.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi-reconfigure-raspi-firmware.service"
-      ln -s /etc/systemd/system/rpi-generate-ssh-host-keys.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/rpi-generate-ssh-host-keys.service"
+      ln -s /etc/systemd/system/firmware.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/firmware.service"
+      ln -s /etc/systemd/system/openssh-keys.service "${ROOT?}/etc/systemd/system/multi-user.target.requires/openssh-keys.service"
 
       rm -f "${ROOT?}"/etc/ssh/ssh_host_*_key*
     root-fs: /
