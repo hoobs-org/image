@@ -118,6 +118,11 @@ steps:
     perm: 0644
     unless: rootfs_unpacked
 
+  - copy-file: /etc/sysctl.conf
+    src: rootfs/etc/sysctl.conf
+    perm: 0644
+    unless: rootfs_unpacked
+
   - copy-file: /etc/sudoers
     src: rootfs/etc/sudoers
     perm: 0440
@@ -191,6 +196,7 @@ steps:
 
   - chroot: /
     shell: |
+      sysctl -p
       curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | tee /usr/share/keyrings/nodesource.gpg > /dev/null
       curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarn.gpg > /dev/null
       curl -s https://dl.hoobs.org/debian/pubkey.gpg.key | gpg --dearmor | tee /usr/share/keyrings/hoobs.gpg > /dev/null
