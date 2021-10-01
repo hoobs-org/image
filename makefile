@@ -59,7 +59,7 @@ hoobs-version-armhf.yaml:
 	$(eval CACHE := $(subst .img,.tar.gz,$(BASE)))
 	$(eval CACHE := $(subst hoobs-,,$(CACHE)))
 	$(eval CACHE := $(subst box-,,$(CACHE)))
-	time nice $(as_root) vmdb2 --verbose --rootfs-tarball=cache/$(CACHE) --output=builds/$(NAME) cache/$(subst .img,.yaml,$(BASE)) --log build.log
+	time nice $(as_root) vmdb2 --verbose --output=builds/$(NAME) cache/$(subst .img,.yaml,$(BASE)) --log build.log
 	rm -f cache/$(subst .img,.yaml,$(BASE))
 	$(as_root) chown $(shell whoami):$(shell whoami) builds/$(NAME)
 
