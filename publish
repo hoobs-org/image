@@ -71,25 +71,9 @@ Program.command("edge")
             version: pjson.version,
             published: new Date(),
             latest: true,
-            download: `https://github.com/hoobs-org/repo/releases/download/v${pjson.version}/hoobs-v${pjson.version}.zip`,
-            beta: true,
-        });
-
-        await releases.insertOne({
-            application: "server",
-            version: pjson.version,
-            published: new Date(),
-            latest: true,
-            download: `https://github.com/hoobs-org/repo/releases/download/v${pjson.version}/hoobsd-v${pjson.version}.zip`,
-            beta: true,
-        });
-
-        await releases.insertOne({
-            application: "box",
-            version: pjson.version,
-            published: new Date(),
-            latest: true,
-            download: `https://github.com/hoobs-org/repo/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}.zip`,
+            download_box: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}-armhf.xz`,
+            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-armhf.xz`,
+            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-arm64.xz`,
             beta: true,
         });
 
@@ -121,25 +105,9 @@ Program.command("stable")
             version: pjson.version,
             published: new Date(),
             latest: true,
-            download: `https://github.com/hoobs-org/repo/releases/download/v${pjson.version}/hoobs-v${pjson.version}.zip`,
-            beta: false,
-        });
-
-        await releases.insertOne({
-            application: "server",
-            version: pjson.version,
-            published: new Date(),
-            latest: true,
-            download: `https://github.com/hoobs-org/repo/releases/download/v${pjson.version}/hoobsd-v${pjson.version}.zip`,
-            beta: false,
-        });
-
-        await releases.insertOne({
-            application: "box",
-            version: pjson.version,
-            published: new Date(),
-            latest: true,
-            download: `https://github.com/hoobs-org/repo/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}.zip`,
+            download_box: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}-armhf.xz`,
+            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-armhf.xz`,
+            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-arm64.xz`,
             beta: false,
         });
 
