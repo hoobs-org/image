@@ -76,6 +76,13 @@ case $1 in
         rebuild
         ;;
 
+    publish )
+        shift
+
+        gh auth login
+        ./publish $@
+        ;;
+
     clean )
         make clean
         ;;
