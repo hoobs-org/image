@@ -4,6 +4,14 @@ COUNT=0
 
 version() {
     case $1 in
+        edge )
+            echo "$(./publish released edge)"
+            ;;
+
+        stable )
+            echo "$(./publish released stable)"
+            ;;
+
         nodesource )
             echo `node -e 'console.log(require("./package.json").engines.nodesource)'`
             ;;

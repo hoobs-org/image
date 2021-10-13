@@ -1,6 +1,6 @@
 {
     "name": "hoobs-image",
-    "version": "4.1.1",
+    "version": "4.1.2",
     "description": "HOOBS OS Image Builder",
     "license": "GPL-3.0",
     "engines": {
@@ -17,6 +17,7 @@
         "name": "Michael J Kellsy"
     },
     "devDependencies": {
+        "axios": "^0.23.0",
         "commander": "^8.2.0",
         "mongodb": "^4.1.3"
     }
