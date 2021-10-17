@@ -53,16 +53,7 @@ async function readPackages(branch, arch, results) {
     packages = (readFileSync(join(__dirname, `../repo/debian/dists/${branch}/main/binary-${arch}/Packages`)).toString() || "").split("\n");
 
     for (let i = 0; i < packages.length; i += 1) {
-        if (packages[i].startsWith("Package:")) {
-            index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
-
-            if (index === -1) {
-                index = results.length;
-
-                results.push({ package:  packages[i].split(":").pop().trim() });
-            }
-        }
-
+        if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
         if (packages[i].startsWith("Version:") && index > -1) results[index][branch] = packages[i].split(":").pop().trim().replace(/-hoobs/gi, "");
     }
 
@@ -70,7 +61,7 @@ async function readPackages(branch, arch, results) {
 
     for (let i = 0; i < packages.length; i += 1) {
         if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
-        if (packages[i].startsWith("Version:") && index > -1 && results[index][branch] !== packages[i].split(":").pop().trim().replace(/-hoobs/gi, "")) results[index][branch] = `${results[index][branch]} needs push`;
+        if (packages[i].startsWith("Version:") && index > -1 && results[index][branch] !== packages[i].split(":").pop().trim().replace(/-hoobs/gi, "")) results[index][branch] = `* ${results[index][branch]}`;
     }
 }
 
@@ -79,46 +70,32 @@ async function readRelease(branch, results) {
     let index = -1;
 
     if (branch === "stable" || branch === "edge") {
-        release = (((await Request.get(`https://support.hoobs.org/api/releases/image/${branch === "edge" ? "beta" : "latest"}`)).data) || {}).results;
+        release = (((await Request.get(`https://support.hoobs.org/api/releases/image/${branch === "edge" ? "beta" : "latest"}`)).data) || {}).results || {};
         index = results.findIndex((record) => record.package === "image");
 
-        if (index === -1) {
-            index = results.length;
+        if (release.version && release.version !== "") results[index][branch] = release.version;
 
-            results.push({ package:  "image" });
-        }
-
-        results[index][branch] = release.version;
-
-        release = (((await Request.get(`https://support.hoobs.org/api/releases/desktop/${branch === "edge" ? "beta" : "latest"}`)).data) || {}).results;
+        release = (((await Request.get(`https://support.hoobs.org/api/releases/desktop/${branch === "edge" ? "beta" : "latest"}`)).data) || {}).results || {};
         index = results.findIndex((record) => record.package === "desktop");
 
-        if (index === -1) {
-            index = results.length;
+        if (release.version && release.version !== "") results[index][branch] = release.version;
+    }
 
-            results.push({ package:  "desktop" });
-        }
+    if (branch === "stable") {
+        release = execLocal(`${join(__dirname, "../node_modules/.bin/yarn")} info @hoobs/sdk version`, { cwd: __dirname, stdio: "pipe" }).split("\n")[1] || "";
+        index = results.findIndex((record) => record.package === "sdk");
 
-        results[index][branch] = release.version;
-    } else {
-        index = results.findIndex((record) => record.package === "image");
+        if (release && release !== "") results[index][branch] = release;
 
-        if (index === -1) {
-            index = results.length;
+        release = execLocal(`${join(__dirname, "../node_modules/.bin/yarn")} info @hoobs/network version`, { cwd: __dirname, stdio: "pipe" }).split("\n")[1] || "";
+        index = results.findIndex((record) => record.package === "network");
 
-            results.push({ package:  "image" });
-        }
+        if (release && release !== "") results[index][branch] = release;
 
-        results[index][branch] = "n/a";
-        index = results.findIndex((record) => record.package === "desktop");
+        release = execLocal(`${join(__dirname, "../node_modules/.bin/yarn")} info @hoobs/pam version`, { cwd: __dirname, stdio: "pipe" }).split("\n")[1] || "";
+        index = results.findIndex((record) => record.package === "pam");
 
-        if (index === -1) {
-            index = results.length;
-
-            results.push({ package:  "desktop" });
-        }
-
-        results[index][branch] = "n/a";
+        if (release && release !== "") results[index][branch] = release;
     }
 }
 
@@ -143,7 +120,21 @@ Program.command("repository <branch> [arch]>")
 Program.command("published [branch]")
     .description("fetch versions from live repository")
     .action(async (branch) => {
-        const results = [];
+        const results = [
+            { package: "hoobs-gui", method: "apt" },
+            { package: "desktop", method: "" },
+            { package: "sdk", method: "npm" },
+            { package: "hoobs-cli", method: "apt" },
+            { package: "hoobsd", method: "apt" },
+            { package: "hbs-portal", method: "apt" },
+            { package: "helm", method: "apt" },
+            { package: "network", method: "npm" },
+            { package: "pam", method: "npm" },
+            { package: "image", method: "" },
+            { package: "deconz", method: "apt" },
+            { package: "hyperion", method: "apt" },
+            { package: "soma-connect", method: "apt" },
+        ];
 
         if (!branch || branch === "stable") {
             await readRelease("stable", results);
@@ -160,7 +151,6 @@ Program.command("published [branch]")
         }
 
         if (!branch || branch === "bleeding") {
-            await readRelease("bleeding", results);
             await readPackages("bleeding", "amd64", results);
             await readPackages("bleeding", "arm64", results);
             await readPackages("bleeding", "armhf", results);
