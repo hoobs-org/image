@@ -17,7 +17,9 @@
         "name": "Michael J Kellsy"
     },
     "devDependencies": {
+        "as-table": "^1.0.55",
         "axios": "^0.23.0",
+        "chalk": "^4.1.2",
         "commander": "^8.2.0",
         "mongodb": "^4.1.3"
     }

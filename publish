@@ -20,6 +20,8 @@
 
 const Program = require("commander");
 const Request = require("axios");
+const Chalk = require("chalk");
+const Table = require("as-table");
 const { join } = require("path");
 const { readFileSync } = require("fs");
 const { execSync } = require("child_process");
@@ -44,13 +46,89 @@ function createRelease(title, notes, beta) {
     }
 }
 
+async function readPackages(branch, arch, results) {
+    let packages;
+    let index = -1;
+
+    packages = (readFileSync(join(__dirname, `../repo/debian/dists/${branch}/main/binary-${arch}/Packages`)).toString() || "").split("\n");
+
+    for (let i = 0; i < packages.length; i += 1) {
+        if (packages[i].startsWith("Package:")) {
+            index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
+
+            if (index === -1) {
+                index = results.length;
+
+                results.push({ package:  packages[i].split(":").pop().trim() });
+            }
+        }
+
+        if (packages[i].startsWith("Version:") && index > -1) results[index][branch] = packages[i].split(":").pop().trim().replace(/-hoobs/gi, "");
+    }
+
+    packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch}/main/binary-${arch}/Packages`)).data || "").split("\n");
+
+    for (let i = 0; i < packages.length; i += 1) {
+        if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
+        if (packages[i].startsWith("Version:") && index > -1 && results[index][branch] !== packages[i].split(":").pop().trim().replace(/-hoobs/gi, "")) results[index][branch] = `${results[index][branch]} needs push`;
+    }
+}
+
+async function readRelease(branch, results) {
+    let release;
+    let index = -1;
+
+    if (branch === "stable" || branch === "edge") {
+        release = (((await Request.get(`https://support.hoobs.org/api/releases/image/${branch === "edge" ? "beta" : "latest"}`)).data) || {}).results;
+        index = results.findIndex((record) => record.package === "image");
+
+        if (index === -1) {
+            index = results.length;
+
+            results.push({ package:  "image" });
+        }
+
+        results[index][branch] = release.version;
+
+        release = (((await Request.get(`https://support.hoobs.org/api/releases/desktop/${branch === "edge" ? "beta" : "latest"}`)).data) || {}).results;
+        index = results.findIndex((record) => record.package === "desktop");
+
+        if (index === -1) {
+            index = results.length;
+
+            results.push({ package:  "desktop" });
+        }
+
+        results[index][branch] = release.version;
+    } else {
+        index = results.findIndex((record) => record.package === "image");
+
+        if (index === -1) {
+            index = results.length;
+
+            results.push({ package:  "image" });
+        }
+
+        results[index][branch] = "n/a";
+        index = results.findIndex((record) => record.package === "desktop");
+
+        if (index === -1) {
+            index = results.length;
+
+            results.push({ package:  "desktop" });
+        }
+
+        results[index][branch] = "n/a";
+    }
+}
+
 Program.version(pjson.version, "-v, --version", "output the current version");
 Program.allowUnknownOption();
 
-Program.command("repository <branch>")
+Program.command("repository <branch> [arch]>")
     .description("fetch versions from live repository")
-    .action(async (branch) => {
-        const packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch}/main/binary-amd64/Packages`)).data || "").split("\n");
+    .action(async (branch, arch) => {
+        const packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch || "stable"}/main/binary-${arch || "amd64"}/Packages`)).data || "").split("\n");
         const results = [];
 
         for (let i = 0; i < packages.length; i += 1) {
@@ -59,6 +137,46 @@ Program.command("repository <branch>")
         }
 
         console.log(results.join(" "));
+        process.exit();
+    });
+
+Program.command("published [branch]")
+    .description("fetch versions from live repository")
+    .action(async (branch) => {
+        const results = [];
+
+        if (!branch || branch === "stable") {
+            await readRelease("stable", results);
+            await readPackages("stable", "amd64", results);
+            await readPackages("stable", "arm64", results);
+            await readPackages("stable", "armhf", results);
+        }
+
+        if (!branch || branch === "edge") {
+            await readRelease("edge", results);
+            await readPackages("edge", "amd64", results);
+            await readPackages("edge", "arm64", results);
+            await readPackages("edge", "armhf", results);
+        }
+
+        if (!branch || branch === "bleeding") {
+            await readRelease("bleeding", results);
+            await readPackages("bleeding", "amd64", results);
+            await readPackages("bleeding", "arm64", results);
+            await readPackages("bleeding", "armhf", results);
+        }
+
+        console.log("");
+
+        console.log(Table.configure({
+            title: (item) => Chalk.cyan(item),
+            print: (item) => Chalk.white(item),
+            delimiter: Chalk.dim(" | "),
+            dash: Chalk.dim("-"),
+        })(results));
+
+        console.log("");
+
         process.exit();
     });
 
