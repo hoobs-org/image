@@ -46,6 +46,28 @@ function createRelease(title, notes, beta) {
     }
 }
 
+function translatePackage(value) {
+    switch (value) {
+        case "hoobs-gui":
+            return "gui";
+
+        case "hoobs-cli":
+            return "cli";
+
+        case "hbs-portal":
+            return "portal";
+
+        case "helm":
+            return "console";
+
+        case "soma-connect":
+            return "soma";
+
+        default:
+            return value;
+    }
+}
+
 async function readPackages(branch, arch, results) {
     let packages;
     let index = -1;
@@ -53,14 +75,14 @@ async function readPackages(branch, arch, results) {
     packages = (readFileSync(join(__dirname, `../repo/debian/dists/${branch}/main/binary-${arch}/Packages`)).toString() || "").split("\n");
 
     for (let i = 0; i < packages.length; i += 1) {
-        if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
+        if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === translatePackage(packages[i].split(":").pop().trim()));
         if (packages[i].startsWith("Version:") && index > -1) results[index][branch] = packages[i].split(":").pop().trim().replace(/-hoobs/gi, "");
     }
 
     packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch}/main/binary-${arch}/Packages`)).data || "").split("\n");
 
     for (let i = 0; i < packages.length; i += 1) {
-        if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === packages[i].split(":").pop().trim());
+        if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === translatePackage(packages[i].split(":").pop().trim()));
         if (packages[i].startsWith("Version:") && index > -1 && results[index][branch] !== packages[i].split(":").pop().trim().replace(/-hoobs/gi, "")) results[index][branch] = `* ${results[index][branch]}`;
     }
 }
@@ -96,6 +118,11 @@ async function readRelease(branch, results) {
         index = results.findIndex((record) => record.package === "pam");
 
         if (release && release !== "") results[index][branch] = release;
+
+        release = execLocal(`${join(__dirname, "../node_modules/.bin/yarn")} info @hoobs/migration version`, { cwd: __dirname, stdio: "pipe" }).split("\n")[1] || "";
+        index = results.findIndex((record) => record.package === "migration");
+
+        if (release && release !== "") results[index][branch] = release;
     }
 }
 
@@ -121,19 +148,20 @@ Program.command("published [branch]")
     .description("fetch versions from live repository")
     .action(async (branch) => {
         const results = [
-            { package: "hoobs-gui", method: "apt" },
-            { package: "desktop", method: "" },
-            { package: "sdk", method: "npm" },
-            { package: "hoobs-cli", method: "apt" },
-            { package: "hoobsd", method: "apt" },
-            { package: "hbs-portal", method: "apt" },
-            { package: "helm", method: "apt" },
-            { package: "network", method: "npm" },
-            { package: "pam", method: "npm" },
-            { package: "image", method: "" },
-            { package: "deconz", method: "apt" },
-            { package: "hyperion", method: "apt" },
-            { package: "soma-connect", method: "apt" },
+            { package: "gui", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "desktop", arch: "amd64" },
+            { package: "sdk", method: "npm", arch: "all" },
+            { package: "cli", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "hoobsd", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "portal", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "console", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "network", method: "npm", arch: "all" },
+            { package: "pam", method: "npm", arch: "amd64, arm64, armhf" },
+            { package: "image", arch: "arm64, armhf" },
+            { package: "deconz", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "hyperion", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "soma", method: "apt", arch: "armhf" },
+            { package: "migration", method: "npm", arch: "all" },
         ];
 
         if (!branch || branch === "stable") {
