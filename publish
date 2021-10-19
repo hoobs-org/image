@@ -235,6 +235,7 @@ Program.command("edge")
             download_box: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}-armhf.xz`,
             download_armhf: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-armhf.xz`,
             download_arm64: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-arm64.xz`,
+            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-darwin.pkg`,
             beta: true,
         });
 
@@ -269,6 +270,7 @@ Program.command("stable")
             download_box: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}-armhf.xz`,
             download_armhf: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-armhf.xz`,
             download_arm64: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-arm64.xz`,
+            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-darwin.pkg`,
             beta: false,
         });
 
