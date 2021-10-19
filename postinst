@@ -1,0 +1,7 @@
+#!/bin/sh
+
+rm -f /etc/issue
+rm -f /etc/motd
+
+mv /etc/hbs-issue /etc/issue || true
+mv /etc/hbs-motd /etc/motd || true

@@ -144,22 +144,6 @@ steps:
     contents: |
       hoobs
 
-  - copy-file: /etc/issue
-    src: rootfs/etc/issue
-    perm: 0644
-
-  - copy-file: /etc/motd
-    src: rootfs/etc/motd
-    perm: 0644
-
-  - copy-file: /etc/update-motd.d/10-uname
-    src: rootfs/etc/update-motd.d/10-uname
-    perm: 0755
-
-  - copy-file: /etc/update-motd.d/20-network
-    src: rootfs/etc/update-motd.d/20-network
-    perm: 0755
-
   - copy-file: /usr/lib/python3.9/tzupdate.py
     src: rootfs/usr/lib/python3.9/tzupdate.py
     perm: 0644
@@ -208,6 +192,7 @@ steps:
     - yarn
     - helm
     - hbs-portal
+    - hbs-vendor
     - hoobs-cli
     - hoobsd
     - hoobs-gui

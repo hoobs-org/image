@@ -60,6 +60,9 @@ function translatePackage(value) {
         case "helm":
             return "console";
 
+        case "hbs-vendor":
+            return "vendor";
+
         case "soma-connect":
             return "soma";
 
@@ -158,6 +161,7 @@ Program.command("published [branch]")
             { package: "network", method: "npm", arch: "all" },
             { package: "pam", method: "npm", arch: "amd64, arm64, armhf" },
             { package: "image", arch: "arm64, armhf" },
+            { package: "vendor", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "deconz", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "hyperion", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "soma", method: "apt", arch: "armhf" },
