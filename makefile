@@ -67,6 +67,7 @@ deploy:
 	cp -r darwin cache/
 	chmod -R 755 cache/darwin/scripts
 	chmod -R 755 cache/darwin/
+	mkdir -p cache/packages
 
 distribution:
 	cat distribution | \
