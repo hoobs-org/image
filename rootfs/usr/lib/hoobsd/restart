@@ -1,0 +1,4 @@
+#!/bin/sh
+
+/bin/launchctl unload "/Library/LaunchDaemons/org.hoobsd.plist"
+/bin/launchctl load "/Library/LaunchDaemons/org.hoobsd.plist"

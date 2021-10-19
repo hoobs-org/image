@@ -62,7 +62,9 @@ hoobs-package-hoobsd:
 	cp -R ../hoobsd/cache/hoobsd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/
 	cp ../hoobsd/cache/package.json cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
 	cp rootfs/Library/LaunchDaemons/org.hoobsd.plist cache/hoobsd-$(HOOBSD_VERSION).pkg/Library/LaunchDaemons/
+	cp rootfs/usr/lib/hoobsd/restart cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
 	cp ../hoobsd/main cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
+	chmod 755 cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/restart
 	chmod 755 cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
 	(cd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd && yarn install)
 	pkgbuild --identifier org.hoobs.hoobsd.pkg --version $(HOOBSD_VERSION) --scripts cache/darwin/scripts --root cache/hoobsd-$(HOOBSD_VERSION).pkg cache/packages/hoobsd-$(HOOBSD_VERSION).pkg
