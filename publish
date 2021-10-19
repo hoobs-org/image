@@ -151,17 +151,17 @@ Program.command("published [branch]")
     .description("fetch versions from live repository")
     .action(async (branch) => {
         const results = [
-            { package: "gui", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "gui", method: "apt", arch: "all" },
             { package: "desktop", arch: "amd64" },
             { package: "sdk", method: "npm", arch: "all" },
             { package: "cli", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "hoobsd", method: "apt", arch: "amd64, arm64, armhf" },
-            { package: "portal", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "portal", method: "apt", arch: "all" },
             { package: "console", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "network", method: "npm", arch: "all" },
             { package: "pam", method: "npm", arch: "amd64, arm64, armhf" },
             { package: "image", arch: "arm64, armhf" },
-            { package: "vendor", method: "apt", arch: "amd64, arm64, armhf" },
+            { package: "vendor", method: "apt", arch: "all" },
             { package: "deconz", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "hyperion", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "soma", method: "apt", arch: "armhf" },
