@@ -44,7 +44,7 @@ hoobs-package-hoobsd:
 	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local
 	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib
 	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin
-	cd (../hoobsd && make hoobsd-darwin)
+	(cd ../hoobsd && make hoobsd-darwin)
 	cp -R ../hoobsd/cache/hoobsd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/
 	cp ../hoobsd/cache/package.json cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
 	cp ../hoobsd/main cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
