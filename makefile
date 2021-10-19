@@ -7,7 +7,7 @@ endif
 hoobs-package: clean paths deploy distribution hoobs-package-node hoobs-package-cli hoobs-package-hoobsd
 	$(eval VERSION := $(shell ../hoobsd/project version))
 	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages builds/hoobs-$(VERSION)-darwin.pkg
-	# productsign --sign "Developer ID Installer: ${APPLE_DEVELOPER_CERTIFICATE_ID}" builds/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
+	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" builds/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
 
 hoobs-package-node:
 	$(eval NODE_VERSION := $(shell project version node))
