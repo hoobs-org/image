@@ -37,21 +37,6 @@ hoobs-package-cli:
 	(cd cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/hbs && yarn install)
 	pkgbuild --identifier org.hoobs.hbs.pkg --version $(CLI_VERSION) --root cache/hbs-$(CLI_VERSION).pkg cache/packages/hbs-$(CLI_VERSION).pkg
 
-hoobs-package-hoobsd:
-	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
-	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg
-	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr
-	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local
-	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib
-	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin
-	(cd ../hoobsd && make hoobsd-darwin)
-	cp -R ../hoobsd/cache/hoobsd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/
-	cp ../hoobsd/cache/package.json cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
-	cp ../hoobsd/main cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
-	chmod 755 cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
-	(cd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd && yarn install)
-	pkgbuild --identifier org.hoobs.hoobsd.pkg --version $(HOOBSD_VERSION) --scripts cache/darwin/scripts --root cache/hoobsd-$(HOOBSD_VERSION).pkg cache/packages/hoobsd-$(HOOBSD_VERSION).pkg
-
 hoobs-package-gui:
 	$(eval GUI_VERSION := $(shell ../gui/project version))
 	mkdir -p cache/gui-$(GUI_VERSION).pkg
@@ -63,6 +48,24 @@ hoobs-package-gui:
 	(cd ../gui && make deploy)
 	cp -R ../gui/dist/usr/lib/hoobs cache/gui-$(GUI_VERSION).pkg/usr/local/lib/
 	pkgbuild --identifier org.hoobs.gui.pkg --version $(GUI_VERSION) --root cache/gui-$(GUI_VERSION).pkg cache/packages/gui-$(GUI_VERSION).pkg
+
+hoobs-package-hoobsd:
+	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/Library
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/Library/LaunchDaemons
+	(cd ../hoobsd && make hoobsd-darwin)
+	cp -R ../hoobsd/cache/hoobsd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/
+	cp ../hoobsd/cache/package.json cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
+	cp rootfs/Library/LaunchDaemons/org.hoobsd.plist cache/hoobsd-$(HOOBSD_VERSION).pkg/Library/LaunchDaemons/
+	cp ../hoobsd/main cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
+	chmod 755 cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
+	(cd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd && yarn install)
+	pkgbuild --identifier org.hoobs.hoobsd.pkg --version $(HOOBSD_VERSION) --scripts cache/darwin/scripts --root cache/hoobsd-$(HOOBSD_VERSION).pkg cache/packages/hoobsd-$(HOOBSD_VERSION).pkg
 
 hoobs-package-deploy:
 	cp -r darwin cache/

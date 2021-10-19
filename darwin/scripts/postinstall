@@ -1,3 +1,11 @@
 #!/bin/bash
 
-/usr/local/bin/hbs install -p 80
+mkdir -p /var/lib
+mkdir -p /var/lib/hoobs
+
+if [ ! -f /var/lib/hoobs/bridges.conf ]; then
+    touch /var/lib/hoobs/bridges.conf
+    echo '[{"id":"hub","type":"hub","display":"Hub","port":80,"pin":"031-45-154","username":"AE:2D:52:9B:CE:EB","autostart":0}]' >> /var/lib/hoobs/bridges.conf
+fi
+
+launchctl load -w /Library/LaunchDaemons/org.hoobsd.plist
