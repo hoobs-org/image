@@ -14,7 +14,7 @@ hoobs-package-node:
 	mkdir -p cache/node-$(NODE_VERSION).pkg
 	mkdir -p cache/node-$(NODE_VERSION).pkg/usr
 	mkdir -p cache/node-$(NODE_VERSION).pkg/usr/local
-	wget -O cache/node-$(NODE_VERSION).pkg/usr/local/node.xz https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.xz
+	curl https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.xz --output cache/node-$(NODE_VERSION).pkg/usr/local/node.xz
 	(cd cache/node-$(NODE_VERSION).pkg/usr/local && tar -xvf node.xz --strip-components=1 --no-same-owner)
 	rm -f cache/node-$(NODE_VERSION).pkg/usr/local/node.xz
 	rm -f cache/node-$(NODE_VERSION).pkg/usr/local/CHANGELOG.md
