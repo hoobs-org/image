@@ -5,9 +5,12 @@ else
 endif
 
 hoobs-package: clean paths hoobs-package-deploy hoobs-package-control hoobs-package-node hoobs-package-cli hoobs-package-hoobsd hoobs-package-gui
-	$(eval VERSION := $(shell ../hoobsd/project version))
-	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages cache/hoobs-$(VERSION)-darwin.pkg
-	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" cache/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
+	$(eval NODE_VERSION := $(shell project version node))
+	$(eval CLI_VERSION := $(shell ../cli/project version))
+	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
+	$(eval GUI_VERSION := $(shell ../gui/project version))
+	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package cache/packages/node-$(NODE_VERSION).pkg --package cache/packages/hbs-$(CLI_VERSION).pkg --package cache/packages/hoobsd-$(HOOBSD_VERSION).pkg --package cache/packages/gui-$(GUI_VERSION).pkg cache/hoobs-$(HOOBSD_VERSION)-darwin.pkg
+	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" cache/hoobs-$(HOOBSD_VERSION)-darwin.pkg builds/hoobs-$(HOOBSD_VERSION)-darwin.pkg
 
 hoobs-package-node:
 	$(eval NODE_VERSION := $(shell project version node))
@@ -71,11 +74,15 @@ hoobs-package-deploy:
 	mkdir -p cache/packages
 
 hoobs-package-control:
+	$(eval NODE_VERSION := $(shell project version node))
+	$(eval CLI_VERSION := $(shell ../cli/project version))
+	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
+	$(eval GUI_VERSION := $(shell ../gui/project version))
 	cat distribution | \
-	sed "s/__NODE_VERSION__/$(shell project version node)/" | \
-	sed "s/__CLI_VERSION__/$(shell ../cli/project version)/" | \
-	sed "s/__HOOBSD_VERSION__/$(shell ../hoobsd/project version)/" | \
-	sed "s/__GUI_VERSION__/$(shell ../gui/project version)/" > cache/darwin/Distribution
+	sed "s/__NODE_VERSION__/$(NODE_VERSION)/" | \
+	sed "s/__CLI_VERSION__/$(CLI_VERSION)/" | \
+	sed "s/__HOOBSD_VERSION__/$(HOOBSD_VERSION)/" | \
+	sed "s/__GUI_VERSION__/$(GUI_VERSION)/" > cache/darwin/Distribution
 	chmod 755 cache/darwin/Distribution
 
 hoobs-box-version-armhf.yaml:
