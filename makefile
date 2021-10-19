@@ -6,8 +6,8 @@ endif
 
 hoobs-package: clean paths hoobs-package-deploy hoobs-package-control hoobs-package-node hoobs-package-cli hoobs-package-hoobsd
 	$(eval VERSION := $(shell ../hoobsd/project version))
-	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages builds/hoobs-$(VERSION)-darwin.pkg
-	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" builds/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
+	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages cache/hoobs-$(VERSION)-darwin.pkg
+	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" cache/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
 
 hoobs-package-node:
 	$(eval NODE_VERSION := $(shell project version node))
