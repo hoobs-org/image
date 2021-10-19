@@ -9,13 +9,13 @@ hoobs-vendor: clean paths hoobs-vendor-metadata
 	mkdir -p cache/dist/etc/update-motd.d
 	cp rootfs/etc/motd cache/dist/etc/hbs-motd
 	cp rootfs/etc/issue cache/dist/etc/hbs-issue
-	cp rootfs/etc/update-motd.d/10-uname cache/dist/etc/update-motd.d/
+	cp rootfs/etc/update-motd.d/10-uname cache/dist/etc/update-motd.d/hbs-uname
 	cp rootfs/etc/update-motd.d/20-network cache/dist/etc/update-motd.d/
 	cp preinst cache/dist/DEBIAN/
 	cp postinst cache/dist/DEBIAN/
 	chmod 644 cache/dist/etc/hbs-motd
 	chmod 644 cache/dist/etc/hbs-issue
-	chmod 755 cache/dist/etc/update-motd.d/10-uname
+	chmod 755 cache/dist/etc/update-motd.d/hbs-uname
 	chmod 755 cache/dist/etc/update-motd.d/20-network
 	chmod 755 cache/dist/DEBIAN/preinst
 	chmod 755 cache/dist/DEBIAN/postinst
