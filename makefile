@@ -34,7 +34,7 @@ hoobs-package-cli:
 	cp ../cli/cache/package.json cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/hbs/
 	cp ../cli/main cache/hbs-$(CLI_VERSION).pkg/usr/local/bin/hbs
 	chmod 755 cache/hbs-$(CLI_VERSION).pkg/usr/local/bin/hbs
-	(cd cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/hbs && ../cli/node_modules/.bin/yarn install)
+	(cd cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/hbs && yarn install)
 	pkgbuild --identifier org.hoobs.hbs.pkg --version $(CLI_VERSION) --root cache/hbs-$(CLI_VERSION).pkg cache/packages/hbs-$(CLI_VERSION).pkg
 
 hoobs-package-hoobsd:
@@ -49,7 +49,7 @@ hoobs-package-hoobsd:
 	cp ../hoobsd/cache/package.json cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
 	cp ../hoobsd/main cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
 	chmod 755 cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
-	(cd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd && ../hoobsd/node_modules/.bin/yarn install)
+	(cd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd && yarn install)
 	pkgbuild --identifier org.hoobs.hoobsd.pkg --version $(HOOBSD_VERSION) --scripts cache/darwin/scripts --root cache/hoobsd-$(HOOBSD_VERSION).pkg cache/packages/hoobsd-$(HOOBSD_VERSION).pkg
 
 hoobs-package-gui:
