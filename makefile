@@ -5,12 +5,9 @@ else
 endif
 
 hoobs-package: clean paths hoobs-package-deploy hoobs-package-control hoobs-package-node hoobs-package-cli hoobs-package-hoobsd hoobs-package-gui
-	$(eval NODE_VERSION := $(shell project version node))
-	$(eval CLI_VERSION := $(shell ../cli/project version))
-	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
-	$(eval GUI_VERSION := $(shell ../gui/project version))
-	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package cache/packages/node-$(NODE_VERSION).pkg --package cache/packages/hbs-$(CLI_VERSION).pkg --package cache/packages/hoobsd-$(HOOBSD_VERSION).pkg --package cache/packages/gui-$(GUI_VERSION).pkg cache/hoobs-$(HOOBSD_VERSION)-darwin.pkg
-	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" cache/hoobs-$(HOOBSD_VERSION)-darwin.pkg builds/hoobs-$(HOOBSD_VERSION)-darwin.pkg
+	$(eval VERSION := $(shell project version))
+	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages cache/hoobs-$(VERSION)-darwin.pkg
+	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" cache/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
 
 hoobs-package-node:
 	$(eval NODE_VERSION := $(shell project version node))
