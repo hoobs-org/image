@@ -11,18 +11,13 @@
             <key>HOME</key>
             <string>/var/root</string>
         </dict>
-        <key>Program</key>
-        <string>/usr/local/bin/hoobsd</string>
         <key>ProgramArguments</key>
         <array>
             <string>/usr/local/bin/hoobsd</string>
             <string>hub</string>
         </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <true/>
-        <key>SessionCreate</key>
-        <true/>
+        <key>RunAtLoad</key><true />
+        <key>KeepAlive</key><true />
+        <key>SessionCreate</key><true />
     </dict>
 </plist>
