@@ -4,7 +4,7 @@ else
 	as_root = sudo
 endif
 
-hoobs-package: clean paths deploy distribution hoobs-package-node hoobs-package-cli hoobs-package-hoobsd
+hoobs-package: clean paths hoobs-package-deploy hoobs-package-control hoobs-package-node hoobs-package-cli hoobs-package-hoobsd
 	$(eval VERSION := $(shell ../hoobsd/project version))
 	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages builds/hoobs-$(VERSION)-darwin.pkg
 	productsign --sign "Developer ID Installer: HOOBS Inc (SC929T2GA9)" builds/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
@@ -63,13 +63,13 @@ hoobs-package-gui:
 	cp -R ../gui/dist/usr/lib/hoobs cache/gui-$(GUI_VERSION).pkg/usr/local/lib/
 	pkgbuild --identifier org.hoobs.gui.pkg --version $(GUI_VERSION) --root cache/gui-$(GUI_VERSION).pkg cache/packages/gui-$(GUI_VERSION).pkg
 
-deploy:
+hoobs-package-deploy:
 	cp -r darwin cache/
 	chmod -R 755 cache/darwin/scripts
 	chmod -R 755 cache/darwin/
 	mkdir -p cache/packages
 
-distribution:
+hoobs-package-control:
 	cat distribution | \
 	sed "s/__NODE_VERSION__/$(shell project version node)/" | \
 	sed "s/__CLI_VERSION__/$(shell ../cli/project version)/" | \
