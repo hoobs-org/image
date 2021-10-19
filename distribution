@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<installer-gui-script minSpecVersion="1">
+    <title>HOOBS</title>
+    <welcome file="welcome.html" mime-type="text/html" />
+    <conclusion file="conclusion.html" mime-type="text/html" />
+    <background mime-type="image/png" file="banner.png" scaling="proportional" />
+    <background-darkAqua mime-type="image/png" file="banner.png" scaling="proportional" />
+    <pkg-ref id="org.nodejs.node.pkg" auth="root">
+        <bundle-version/>
+    </pkg-ref>
+    <pkg-ref id="org.hoobs.hbs.pkg" auth="root">
+        <bundle-version/>
+    </pkg-ref>
+    <pkg-ref id="org.hoobs.hoobsd.pkg" auth="root">
+        <bundle-version/>
+    </pkg-ref>
+    <pkg-ref id="org.hoobs.gui.pkg" auth="root">
+        <bundle-version/>
+    </pkg-ref>
+    <options customize="never" allow-external-scripts="no" />
+    <license file="LICENSE.txt" />
+    <choices-outline>
+        <line choice="org.nodejs.node.pkg" />
+        <line choice="org.hoobs.hbs.pkg" />
+        <line choice="org.hoobs.hoobsd.pkg" />
+        <line choice="org.hoobs.gui.pkg" />
+    </choices-outline>
+    <choice id="org.nodejs.node.pkg" visible="true" title="Node">
+        <pkg-ref id="org.nodejs.node.pkg" />
+    </choice>
+    <pkg-ref id="org.nodejs.node.pkg" version="__NODE_VERSION__" onConclusion="none">node-__NODE_VERSION__.pkg</pkg-ref>
+    <choice id="org.hoobs.hbs.pkg" visible="true" title="HOOBS CLI">
+        <pkg-ref id="org.hoobs.hbs.pkg" />
+    </choice>
+    <pkg-ref id="org.hoobs.hbs.pkg" version="__CLI_VERSION__" onConclusion="none">hbs-__CLI_VERSION__.pkg</pkg-ref>
+    <choice id="org.hoobs.hoobsd.pkg" visible="true" title="HOOBSD">
+        <pkg-ref id="org.hoobs.hoobsd.pkg" />
+    </choice>
+    <pkg-ref id="org.hoobs.hoobsd.pkg" version="__HOOBSD_VERSION__" onConclusion="none">hoobsd-__HOOBSD_VERSION__.pkg</pkg-ref>
+    <choice id="org.hoobs.gui.pkg" visible="true" title="HOOBS Web UI">
+        <pkg-ref id="org.hoobs.gui.pkg" />
+    </choice>
+    <pkg-ref id="org.hoobs.gui.pkg" version="__GUI_VERSION__" onConclusion="none">gui-__GUI_VERSION__.pkg</pkg-ref>
+</installer-gui-script>

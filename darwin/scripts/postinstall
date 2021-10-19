@@ -1,0 +1,3 @@
+#!/bin/bash
+
+hbs install -p 80

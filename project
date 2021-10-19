@@ -16,6 +16,10 @@ version() {
             echo `node -e 'console.log(require("./package.json").engines.nodesource)'`
             ;;
 
+        node )
+            echo `node -e 'console.log(require("./package.json").engines.node)'`
+            ;;
+
         * )
             echo `node -e 'console.log(require("./package.json").version)'`
             ;;

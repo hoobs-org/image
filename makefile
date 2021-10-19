@@ -4,6 +4,78 @@ else
 	as_root = sudo
 endif
 
+hoobs-package: clean paths deploy distribution hoobs-package-node hoobs-package-cli hoobs-package-hoobsd
+	$(eval VERSION := $(shell ../hoobsd/project version))
+	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages builds/hoobs-$(VERSION)-darwin.pkg
+	# productsign --sign "Developer ID Installer: ${APPLE_DEVELOPER_CERTIFICATE_ID}" builds/hoobs-$(VERSION)-darwin.pkg builds/hoobs-$(VERSION)-darwin.pkg
+
+hoobs-package-node:
+	$(eval NODE_VERSION := $(shell project version node))
+	mkdir -p cache/node-$(NODE_VERSION).pkg
+	mkdir -p cache/node-$(NODE_VERSION).pkg/usr
+	mkdir -p cache/node-$(NODE_VERSION).pkg/usr/local
+	wget -O cache/node-$(NODE_VERSION).pkg/usr/local/node.xz https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.xz
+	(cd cache/node-$(NODE_VERSION).pkg/usr/local && tar -xvf node.xz --strip-components=1 --no-same-owner)
+	rm -f cache/node-$(NODE_VERSION).pkg/usr/local/node.xz
+	rm -f cache/node-$(NODE_VERSION).pkg/usr/local/CHANGELOG.md
+	rm -f cache/node-$(NODE_VERSION).pkg/usr/local/LICENSE
+	rm -f cache/node-$(NODE_VERSION).pkg/usr/local/README.md
+	pkgbuild --identifier org.nodejs.node.pkg --version $(NODE_VERSION) --root cache/node-$(NODE_VERSION).pkg cache/packages/node-$(NODE_VERSION).pkg
+
+hoobs-package-cli:
+	$(eval CLI_VERSION := $(shell ../cli/project version))
+	mkdir -p cache/hbs-$(CLI_VERSION).pkg
+	mkdir -p cache/hbs-$(CLI_VERSION).pkg/usr
+	mkdir -p cache/hbs-$(CLI_VERSION).pkg/usr/local
+	mkdir -p cache/hbs-$(CLI_VERSION).pkg/usr/local/lib
+	mkdir -p cache/hbs-$(CLI_VERSION).pkg/usr/local/bin
+	(cd ../cli && make hbs-darwin)
+	cp -R ../cli/cache/hbs cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/
+	cp ../cli/cache/package.json cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/hbs/
+	cp ../cli/main cache/hbs-$(CLI_VERSION).pkg/usr/local/bin/hbs
+	chmod 755 cache/hbs-$(CLI_VERSION).pkg/usr/local/bin/hbs
+	(cd cache/hbs-$(CLI_VERSION).pkg/usr/local/lib/hbs && ../cli/node_modules/.bin/yarn install)
+	pkgbuild --identifier org.hoobs.hbs.pkg --version $(CLI_VERSION) --root cache/hbs-$(CLI_VERSION).pkg cache/packages/hbs-$(CLI_VERSION).pkg
+
+hoobs-package-hoobsd:
+	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib
+	mkdir -p cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin
+	cd ../hoobsd && make hoobsd-darwin)
+	cp -R ../hoobsd/cache/hoobsd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/
+	cp ../hoobsd/cache/package.json cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd/
+	cp ../hoobsd/main cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
+	chmod 755 cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/bin/hoobsd
+	(cd cache/hoobsd-$(HOOBSD_VERSION).pkg/usr/local/lib/hoobsd && ../hoobsd/node_modules/.bin/yarn install)
+	pkgbuild --identifier org.hoobs.hoobsd.pkg --version $(HOOBSD_VERSION) --scripts cache/darwin/scripts --root cache/hoobsd-$(HOOBSD_VERSION).pkg cache/packages/hoobsd-$(HOOBSD_VERSION).pkg
+
+hoobs-package-gui:
+	$(eval GUI_VERSION := $(shell ../gui/project version))
+	mkdir -p cache/gui-$(GUI_VERSION).pkg
+	mkdir -p cache/gui-$(GUI_VERSION).pkg/usr
+	mkdir -p cache/gui-$(GUI_VERSION).pkg/usr/local
+	mkdir -p cache/gui-$(GUI_VERSION).pkg/usr/local/lib
+	(cd ../gui && make locals)
+	(cd ../gui && make deploy)
+	cp -R ../gui/dist/usr/lib/hoobs cache/gui-$(GUI_VERSION).pkg/usr/local/lib/
+	pkgbuild --identifier org.hoobs.gui.pkg --version $(GUI_VERSION) --root cache/gui-$(GUI_VERSION).pkg cache/packages/gui-$(GUI_VERSION).pkg
+
+deploy:
+	cp -r darwin cache/
+	chmod -R 755 cache/darwin/scripts
+	chmod -R 755 cache/darwin/
+
+distribution:
+	cat distribution | \
+	sed "s/__NODE_VERSION__/$(shell project version node)/" | \
+	sed "s/__CLI_VERSION__/$(shell ../cli/project version)/" | \
+	sed "s/__HOOBSD_VERSION__/$(shell ../hoobsd/project version)/" | \
+	sed "s/__GUI_VERSION__/$(shell ../gui/project version)/" > cache/darwin/Distribution
+	chmod 755 cache/darwin/Distribution
+
 hoobs-box-version-armhf.yaml:
 	cat build.yaml | \
 	sed "s/__RELEASE__/bullseye/" | \
