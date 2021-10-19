@@ -1,0 +1,9 @@
+Package: hbs-vendor
+Version: __VERSION__
+Section: base
+Priority: optional
+Architecture: __ARCH__
+Installed-Size: 65
+Maintainer: HOOBS Maintainers <info@hoobs.com>
+Homepage: https://hoobs.com
+Description: HOOBS motd and issue files.

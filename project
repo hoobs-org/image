@@ -46,6 +46,10 @@ build() {
     truncate -s 0 build.log
 
     case $1 in
+        vendor )
+            make hoobs-vendor
+            ;;
+
         package )
             if [[ "$OSTYPE" == "darwin"* ]]; then
                 printf "\033[0;36mXcode certificates\033[0m\n"
@@ -85,6 +89,16 @@ rebuild() {
     build
 }
 
+publish() {
+    current=$(version)
+
+    case $1 in
+        stable | edge | bleeding )
+            reprepro -b ../repo/debian includedeb $1 builds/hbs-vendor-$current-hoobs-all.deb
+            ;;
+    esac
+}
+
 case $1 in
     version )
         shift
@@ -105,8 +119,19 @@ case $1 in
     publish )
         shift
 
-        gh auth login
-        ./publish $@
+        case $1 in
+            vendor )
+                shift
+
+                publish $@
+                ;;
+
+            * )
+                gh auth login
+                ./publish $@
+                ;;
+        esac
+
         ;;
 
     clean )

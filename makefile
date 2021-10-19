@@ -4,6 +4,32 @@ else
 	as_root = sudo
 endif
 
+hoobs-vendor: clean paths hoobs-vendor-metadata
+	mkdir -p cache/dist/etc
+	mkdir -p cache/dist/etc/update-motd.d
+	cp rootfs/etc/motd cache/dist/etc/
+	cp rootfs/etc/issue cache/dist/etc/
+	cp rootfs/etc/update-motd.d/10-uname cache/dist/etc/update-motd.d/
+	cp rootfs/etc/update-motd.d/20-network cache/dist/etc/update-motd.d/
+	cp preinst cache/dist/DEBIAN/
+	chmod 644 cache/dist/etc/motd
+	chmod 644 cache/dist/etc/issue
+	chmod 755 cache/dist/etc/update-motd.d/10-uname
+	chmod 755 cache/dist/etc/update-motd.d/20-network
+	chmod 755 cache/dist/DEBIAN/preinst
+	(cd cache && dpkg-deb --build dist)
+	cp cache/dist.deb builds/hbs-vendor-$(shell project version)-hoobs-all.deb
+	dpkg-sig --sign builder builds/hbs-vendor-$(shell project version)-hoobs-all.deb
+	rm -fR cache
+	rm -f build.log
+
+hoobs-vendor-metadata:
+	mkdir -p cache/dist
+	mkdir -p cache/dist/DEBIAN
+	cat control | \
+	sed "s/__VERSION__/$(shell project version)/" | \
+	sed "s/__ARCH__/all/" > cache/dist/DEBIAN/control
+
 hoobs-package: clean paths hoobs-package-deploy hoobs-package-control hoobs-package-node hoobs-package-cli hoobs-package-hoobsd hoobs-package-gui
 	$(eval VERSION := $(shell project version))
 	productbuild --distribution cache/darwin/Distribution --resources cache/darwin/Resources --package-path cache/packages cache/hoobs-v$(VERSION)-darwin.pkg
