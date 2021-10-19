@@ -79,7 +79,7 @@ async function readPackages(branch, arch, results) {
         if (packages[i].startsWith("Version:") && index > -1) results[index][branch] = packages[i].split(":").pop().trim().replace(/-hoobs/gi, "");
     }
 
-    packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch}/main/binary-${arch}/Packages`)).data || "").split("\n");
+    packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch}/main/binary-${arch}/Packages?t=${new Date().getTime()}`)).data || "").split("\n");
 
     for (let i = 0; i < packages.length; i += 1) {
         if (packages[i].startsWith("Package:")) index = results.findIndex((record) => record.package === translatePackage(packages[i].split(":").pop().trim()));
@@ -132,7 +132,7 @@ Program.allowUnknownOption();
 Program.command("repository <branch> [arch]>")
     .description("fetch versions from live repository")
     .action(async (branch, arch) => {
-        const packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch || "stable"}/main/binary-${arch || "amd64"}/Packages`)).data || "").split("\n");
+        const packages = ((await Request.get(`https://dl.hoobs.org/debian/dists/${branch || "stable"}/main/binary-${arch || "amd64"}/Packages?t=${new Date().getTime()}`)).data || "").split("\n");
         const results = [];
 
         for (let i = 0; i < packages.length; i += 1) {
