@@ -58,6 +58,7 @@ hoobs-package-gui:
 	mkdir -p cache/gui-$(GUI_VERSION).pkg/usr
 	mkdir -p cache/gui-$(GUI_VERSION).pkg/usr/local
 	mkdir -p cache/gui-$(GUI_VERSION).pkg/usr/local/lib
+	(cd ../lang && ./build)
 	(cd ../gui && make locals)
 	(cd ../gui && make deploy)
 	cp -R ../gui/dist/usr/lib/hoobs cache/gui-$(GUI_VERSION).pkg/usr/local/lib/
