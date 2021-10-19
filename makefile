@@ -79,10 +79,10 @@ hoobs-package-control:
 	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
 	$(eval GUI_VERSION := $(shell ../gui/project version))
 	cat distribution | \
-	sed "s/__NODE_VERSION__/$(NODE_VERSION)/" | \
-	sed "s/__CLI_VERSION__/$(CLI_VERSION)/" | \
-	sed "s/__HOOBSD_VERSION__/$(HOOBSD_VERSION)/" | \
-	sed "s/__GUI_VERSION__/$(GUI_VERSION)/" > cache/darwin/Distribution
+	sed "s/__NODE_VERSION__/$(NODE_VERSION)/g" | \
+	sed "s/__CLI_VERSION__/$(CLI_VERSION)/g" | \
+	sed "s/__HOOBSD_VERSION__/$(HOOBSD_VERSION)/g" | \
+	sed "s/__GUI_VERSION__/$(GUI_VERSION)/g" > cache/darwin/Distribution
 	chmod 755 cache/darwin/Distribution
 
 hoobs-box-version-armhf.yaml:
