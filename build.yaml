@@ -273,3 +273,4 @@ steps:
       adduser hoobs sudo
       echo "hoobs:hoobsadmin" | chpasswd
       passwd -l root
+      __PASSWD_EXPIRE__
