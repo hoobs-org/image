@@ -28,7 +28,7 @@ const { execSync } = require("child_process");
 const { MongoClient } = require("mongodb");
 const credentials = require("../security/credentials.json");
 
-const pjson = JSON.parse(readFileSync(join(__dirname, "package.json")).toString());
+const image = JSON.parse(readFileSync(join(__dirname, "package.json")).toString());
 
 function execLocal(command, options) {
     try {
@@ -40,9 +40,9 @@ function execLocal(command, options) {
 
 function createRelease(title, notes, beta) {
     if (beta) {
-        execLocal(`gh release create v${pjson.version} ${join(__dirname, "builds", `hoobs*-v${pjson.version}-*.*`)} -p -t '${title} ${pjson.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
+        execLocal(`gh release create v${image.version} ${join(__dirname, "builds", `hoobs*-v${image.version}-*.*`)} -p -t '${title} ${image.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
     } else {
-        execLocal(`gh release create v${pjson.version} ${join(__dirname, "builds", `hoobs*-v${pjson.version}-*.*`)} -t '${title} ${pjson.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
+        execLocal(`gh release create v${image.version} ${join(__dirname, "builds", `hoobs*-v${image.version}-*.*`)} -t '${title} ${image.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
     }
 }
 
@@ -129,7 +129,7 @@ async function readRelease(branch, results) {
     }
 }
 
-Program.version(pjson.version, "-v, --version", "output the current version");
+Program.version(image.version, "-v, --version", "output the current version");
 Program.allowUnknownOption();
 
 Program.command("repository <branch> [arch]>")
@@ -224,22 +224,17 @@ Program.command("edge")
         createRelease("HOOBS", "HOOBS image for Raspberry Pi.\n\n* Big fixes", true);
 
         await releases.updateMany({ application: "image", latest: true, beta: true }, { $set: { latest: false } });
-        await releases.updateMany({ application: "server", latest: true, beta: true }, { $set: { latest: false } });
-        await releases.updateMany({ application: "box", latest: true, beta: true }, { $set: { latest: false } });
-
-        await releases.deleteMany({ application: "image", version: pjson.version, beta: true });
-        await releases.deleteMany({ application: "server", version: pjson.version, beta: true });
-        await releases.deleteMany({ application: "box", version: pjson.version, beta: true });
+        await releases.deleteMany({ application: "image", version: image.version, beta: true });
 
         await releases.insertOne({
             application: "image",
-            version: pjson.version,
+            version: image.version,
             published: new Date(),
             latest: true,
-            download_box: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}-armhf.xz`,
-            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-armhf.xz`,
-            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-arm64.xz`,
-            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-darwin.pkg`,
+            download_box: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-box-v${image.version}-armhf.xz`,
+            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-armhf.xz`,
+            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-arm64.xz`,
+            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
             beta: true,
         });
 
@@ -259,26 +254,24 @@ Program.command("stable")
         createRelease("HOOBS", "HOOBS image for Raspberry Pi.\n\n* Big fixes", false);
 
         await releases.updateMany({ application: "image", latest: true, beta: false }, { $set: { latest: false } });
-        await releases.updateMany({ application: "server", latest: true, beta: false }, { $set: { latest: false } });
-        await releases.updateMany({ application: "box", latest: true, beta: false }, { $set: { latest: false } });
-
-        await releases.deleteMany({ application: "image", version: pjson.version, beta: false });
-        await releases.deleteMany({ application: "server", version: pjson.version, beta: false });
-        await releases.deleteMany({ application: "box", version: pjson.version, beta: false });
+        await releases.deleteMany({ application: "image", version: image.version, beta: false });
 
         await releases.insertOne({
             application: "image",
-            version: pjson.version,
+            version: image.version,
             published: new Date(),
             latest: true,
-            download_box: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-box-v${pjson.version}-armhf.xz`,
-            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-armhf.xz`,
-            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-arm64.xz`,
-            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${pjson.version}/hoobs-v${pjson.version}-darwin.pkg`,
+            download_box: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-box-v${image.version}-armhf.xz`,
+            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-armhf.xz`,
+            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-arm64.xz`,
+            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
             beta: false,
         });
 
         const hoobsd = JSON.parse(readFileSync(join(__dirname, "../hoobsd/package.json")).toString()).version;
+
+        await releases.updateMany({ application: "hoobsd", latest: true, beta: false }, { $set: { latest: false } });
+        await releases.deleteMany({ application: "hoobsd", version: hoobsd.version, beta: false });
 
         await releases.insertOne({
             application: "hoobsd",
