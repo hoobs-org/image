@@ -1,6 +1,6 @@
 {
     "name": "hoobs-image",
-    "version": "4.1.9",
+    "version": "4.1.11",
     "description": "HOOBS OS Image Builder",
     "license": "GPL-3.0",
     "engines": {
