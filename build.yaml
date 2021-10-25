@@ -272,5 +272,4 @@ steps:
       adduser --gecos hoobs --disabled-password hoobs
       adduser hoobs sudo
       echo "hoobs:hoobsadmin" | chpasswd
-      passwd --expire hoobs
       passwd -l root
