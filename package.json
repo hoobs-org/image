@@ -1,10 +1,10 @@
 {
     "name": "hoobs-image",
-    "version": "4.1.15",
+    "version": "4.1.17",
     "description": "HOOBS OS Image Builder",
     "license": "GPL-3.0",
     "engines": {
-        "nodesource": "node_14.x",
+        "nodesource": "node_16.x",
         "node": "14.18.1"
     },
     "repository": {
