@@ -52,10 +52,7 @@ build() {
 
         package )
             if [[ "$OSTYPE" == "darwin"* ]]; then
-                printf "\033[0;36mXcode certificates\033[0m\n"
-                security unlock-keychain login.keychain
-
-                (cd ../ && ./project pull) > /dev/null 2>&1
+                (cd ../ && ./project pull)
 
                 printf "\033[0;36mBuild package\033[0m\n"
                 make hoobs-package
