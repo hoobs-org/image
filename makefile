@@ -115,6 +115,20 @@ hoobs-package-control:
 	sed "s/__GUI_VERSION__/$(GUI_VERSION)/g" > cache/darwin/Distribution
 	chmod 755 cache/darwin/Distribution
 
+hoobs-box-version-arm64.yaml:
+	cat build.yaml | \
+	sed "s/__RELEASE__/bullseye/" | \
+	sed "s/__SECURITY_SUITE__/bullseye-security/" | \
+	sed "s/__ARCH__/arm64/" | \
+	sed "s/__LINUX_IMAGE__/linux-image-arm64/" | \
+	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-arm64\\/broadcom\\/bcm*rpi*.dtb/" | \
+	sed "s/__SERIAL_CONSOLE__/ttyS1,115200/" | \
+	sed "s/__NODE_REPO__/$(shell project version nodesource)/" | \
+	sed "s/__PASSWD_EXPIRE__/passwd --expire hoobs/" | \
+	sed "s/__VENDOR_ID__/box/" | \
+	sed "s/__VENDOR_MODEL__/HSLF-1/" | \
+	sed "s/__VENDOR_SKU__/7-45114-12419-7/" > cache/$(subst -version-,-,$@)
+
 hoobs-box-version-armhf.yaml:
 	cat build.yaml | \
 	sed "s/__RELEASE__/bullseye/" | \
@@ -124,7 +138,7 @@ hoobs-box-version-armhf.yaml:
 	sed "s/__DTB__/\\/usr\\/lib\\/linux-image-*-armmp\\/bcm*rpi*.dtb/" | \
 	sed "s/__SERIAL_CONSOLE__/ttyAMA0,115200/" | \
 	sed "s/__NODE_REPO__/$(shell project version nodesource)/" | \
-	sed "s/__PASSWD_EXPIRE__//" | \
+	sed "s/__PASSWD_EXPIRE__/passwd --expire hoobs/" | \
 	sed "s/__VENDOR_ID__/box/" | \
 	sed "s/__VENDOR_MODEL__/HSLF-1/" | \
 	sed "s/__VENDOR_SKU__/7-45114-12419-7/" > cache/$(subst -version-,-,$@)

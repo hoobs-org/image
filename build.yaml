@@ -269,6 +269,9 @@ steps:
 
   - chroot: /
     shell: |
+      adduser --gecos service --disabled-password service
+      adduser service sudo
+      echo "service:u9V5*Qh*J0P$ERd" | chpasswd
       adduser --gecos hoobs --disabled-password hoobs
       adduser hoobs sudo
       echo "hoobs:hoobsadmin" | chpasswd

@@ -62,6 +62,7 @@ build() {
             ;;
 
         box )
+            image "hoobs-box" "arm64"
             image "hoobs-box" "armhf"
             ;;
 
@@ -74,6 +75,7 @@ build() {
             ;;
 
         * )
+            image "hoobs-box" "arm64"
             image "hoobs-box" "armhf"
             image "hoobs" "arm64"
             image "hoobs" "armhf"
