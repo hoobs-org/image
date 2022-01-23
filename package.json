@@ -5,7 +5,7 @@
     "license": "GPL-3.0",
     "engines": {
         "nodesource": "node_16.x",
-        "node": "16.13.1"
+        "node": "16.13.2"
     },
     "repository": {
         "type": "git",
