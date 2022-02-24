@@ -118,9 +118,9 @@ customize_image()
 
 	[[ -f $SRC/install-host.sh ]] && source "$SRC"/install-host.sh
 
-	cp "$SRC"/extensions/tzupdate.sh "${SDCARD}"/tmp/tzupdate.sh
+	cp "$SRC"/packages/tzupdate/tzupdate.sh "${SDCARD}"/tmp/tzupdate.sh
 	chroot "${SDCARD}" /bin/bash -c "/tmp/tzupdate.sh $BUILD_VERSION $RELEASE $BOARD $NODE_REPO $IMG_TYPE $BOOT_METHOD"
-	cp "$SRC"/extensions/tzupdate.py "${SDCARD}"/usr/lib/python3.9/tzupdate.py
+	cp "$SRC"/packages/tzupdate/tzupdate.py "${SDCARD}"/usr/lib/python3.9/tzupdate.py
 
 	call_extension_method "pre_customize_image" "image_tweaks_pre_customize" << 'PRE_CUSTOMIZE_IMAGE'
 *run before install.sh*
