@@ -6,7 +6,7 @@ card: paths
 	./compile $(BUILD_VERSION) BOARD=orangepizero IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
 	./compile $(BUILD_VERSION) BOARD=orangepizeroplus IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
 	./compile $(BUILD_VERSION) BOARD=rock64 IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=tinkerboard IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
+	./compile $(BUILD_VERSION) BOARD=tinkerboard IMG_TYPE=sdcard BRANCH=legacy RELEASE=bullseye NODE_REPO=$(NODE_REPO)
 	./compile $(BUILD_VERSION) BOARD=rpi IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
 
 box: paths
