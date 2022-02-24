@@ -28,19 +28,19 @@ boards() {
 
 build() {
 	case $1 in
-        vendor )
-            make vendor
-            ;;
+		vendor )
+			make vendor
+			;;
 
-        package )
-            if [[ "$OSTYPE" == "darwin"* ]]; then
-                (cd ../ && ./project pull)
+		package )
+			if [[ "$OSTYPE" == "darwin"* ]]; then
+				(cd ../ && ./project pull)
 
-                printf "\033[0;36mBuild package\033[0m\n"
-                make darwin
-            fi
+				printf "\033[0;36mBuild package\033[0m\n"
+				make darwin
+			fi
 
-            ;;
+			;;
 
 		box )
 			make box
@@ -62,17 +62,16 @@ rebuild() {
 }
 
 publish() {
-    case $1 in
-        stable | edge | bleeding )
-            reprepro -b ../repo/debian includedeb $1 output/packages/hbs-vendor-$(version)-hoobs-all.deb
-            ;;
-    esac
+	case $1 in
+		stable | edge | bleeding )
+			reprepro -b ../repo/debian includedeb $1 output/packages/hbs-vendor-$(version)-hoobs-all.deb
+			;;
+	esac
 }
 
 case $1 in
 	version )
 		shift
-
 		version $@
 		;;
 
@@ -82,7 +81,6 @@ case $1 in
 
 	build )
 		shift
-
 		build $@
 		;;
 

@@ -70,10 +70,10 @@ available_cpu=$(grep -c 'processor' /proc/cpuinfo)
 available_mem=$(LC_ALL=c free | grep Mem | awk '{print $4/$2 * 100.0}' | awk '{print int($1)}')
 
 if [[ ${BUILD_ALL} == yes && ( ${available_mem} -lt 15 || $(ps -uax | grep "pixz" | wc -l) -gt 4 )]]; then
-    while [[ $(ps -uax | grep "pixz" | wc -l) -gt 2 ]]
-        do echo -en "#"
-        sleep 20
-    done
+	while [[ $(ps -uax | grep "pixz" | wc -l) -gt 2 ]]
+		do echo -en "#"
+		sleep 20
+	done
 fi
 
 pixz -7 -p ${available_cpu} -f $(expr ${available_cpu} + 2) < "${IMG_FILE}" > "${DEPLOY_DIR}/${IMG_FILENAME}.xz"

@@ -222,6 +222,11 @@ POST_DETERMINE_CTHREADS
 	CHOSEN_KSRC=linux-source-${BRANCH}-${LINUXFAMILY}
 fi
 
+export IMG_FILENAME="hoobs-v${BUILD_VERSION}-$(echo "${BOARD}" | sed 's/[A-Z]/\L&/g')-${IMG_TYPE}"
+
+rm -f "${SRC}/output/images/${IMG_FILENAME}.xz"
+rm -f "${SRC}/output/images/${IMG_FILENAME}.sha256"
+
 do_uboot() {
 	start=$(date +%s)
 
@@ -331,7 +336,6 @@ do_raspi() {
 
 	prepare_host_raspi
 
-	export IMG_FILENAME="hoobs-v${BUILD_VERSION}-$(echo "${BOARD}" | sed 's/[A-Z]/\L&/g')-${IMG_TYPE}"
 	export WORK_DIR="${SRC}/cache/work/${BOARD}-${RELEASE}"
 	export DEPLOY_DIR="${DEST}/images"
 	export LOG_FILE="${DEST}/${LOG_SUBPATH}/${BOARD}-${RELEASE}.log"

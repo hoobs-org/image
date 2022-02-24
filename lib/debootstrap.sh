@@ -651,8 +651,6 @@ create_image()
 {
 	mkdir -p $DESTIMG
 
-	local output="hoobs-v${BUILD_VERSION}-$(echo "${BOARD}" | sed 's/[A-Z]/\L&/g')-${IMG_TYPE}"
-
 	display_alert "Copying files to" "/"
 	echo -e "\nCopying files to [/]" >>"${DEST}"/${LOG_SUBPATH}/install.log
 	rsync -aHWXh --exclude="/boot/*" --exclude="/dev/*" --exclude="/proc/*" --exclude="/run/*" --exclude="/tmp/*" --exclude="/sys/*" --info=progress0,stats1 $SDCARD/ $MOUNT/ >> "${DEST}"/${LOG_SUBPATH}/install.log 2>&1
@@ -717,10 +715,10 @@ POST_UMOUNT_FINAL_IMAGE
 
 	rm -rf --one-file-system $MOUNT
 	mkdir -p $DESTIMG
-	mv ${SDCARD}.raw $DESTIMG/${output}.img
+	mv ${SDCARD}.raw $DESTIMG/${IMG_FILENAME}.img
 
 	if [[ -z $SEND_TO_SERVER ]]; then
-		display_alert "Compressing" "${output}.xz" "info"
+		display_alert "Compressing" "${IMG_FILENAME}.xz" "info"
 		available_cpu=$(grep -c 'processor' /proc/cpuinfo)
 
 		[[ ${available_cpu} -gt 16 ]] && available_cpu=16
@@ -734,17 +732,17 @@ POST_UMOUNT_FINAL_IMAGE
 			done
 		fi
 
-		pixz -7 -p ${available_cpu} -f $(expr ${available_cpu} + 2) < $DESTIMG/${output}.img > ${DESTIMG}/${output}.xz
+		pixz -7 -p ${available_cpu} -f $(expr ${available_cpu} + 2) < $DESTIMG/${IMG_FILENAME}.img > ${DESTIMG}/${IMG_FILENAME}.xz
 
 		cd ${DESTIMG}
 
-		display_alert "SHA256 calculating" "${output}.sha256" "info"
-		sha256sum -b ${output}.xz > ${output}.sha256
+		display_alert "SHA256 calculating" "${IMG_FILENAME}.sha256" "info"
+		sha256sum -b ${IMG_FILENAME}.xz > ${IMG_FILENAME}.sha256
 	fi
 
-	display_alert "Done building" "${output}.xz" "info"
+	display_alert "Done building" "${IMG_FILENAME}.xz" "info"
 
-	rm $DESTIMG/${output}.img
-	rsync -a --no-owner --no-group --remove-source-files $DESTIMG/${output}* ${FINALDEST}
+	rm $DESTIMG/${IMG_FILENAME}.img
+	rsync -a --no-owner --no-group --remove-source-files $DESTIMG/${IMG_FILENAME}* ${FINALDEST}
 	rm -rf --one-file-system $DESTIMG
 }

@@ -37,28 +37,28 @@ display_alert "Mounting" "BOOT_DEV" "info"
 cnt=0
 
 until BOOT_DEV=$(losetup --show -f -o "${BOOT_OFFSET}" --sizelimit "${BOOT_LENGTH}" "${IMG_FILE}"); do
-    if [ $cnt -lt 5 ]; then
-        cnt=$((cnt + 1))
-        echo "Error in losetup for BOOT_DEV.  Retrying..."
-        sleep 5
-    else
-        echo "ERROR: losetup for BOOT_DEV failed; exiting"
-        exit 1
-    fi
+	if [ $cnt -lt 5 ]; then
+		cnt=$((cnt + 1))
+		echo "Error in losetup for BOOT_DEV.  Retrying..."
+		sleep 5
+	else
+		echo "ERROR: losetup for BOOT_DEV failed; exiting"
+		exit 1
+	fi
 done
 
 display_alert "Mounting" "ROOT_DEV" "info"
 cnt=0
 
 until ROOT_DEV=$(losetup --show -f -o "${ROOT_OFFSET}" --sizelimit "${ROOT_LENGTH}" "${IMG_FILE}"); do
-    if [ $cnt -lt 5 ]; then
-        cnt=$((cnt + 1))
-        echo "Error in losetup for ROOT_DEV.  Retrying..."
-        sleep 5
-    else
-        echo "ERROR: losetup for ROOT_DEV failed; exiting"
-        exit 1
-    fi
+	if [ $cnt -lt 5 ]; then
+		cnt=$((cnt + 1))
+		echo "Error in losetup for ROOT_DEV.  Retrying..."
+		sleep 5
+	else
+		echo "ERROR: losetup for ROOT_DEV failed; exiting"
+		exit 1
+	fi
 done
 
 display_alert "Boot partition" "offset $BOOT_OFFSET, length $BOOT_LENGTH" "info"
@@ -67,9 +67,9 @@ display_alert "Root partition" "offset $ROOT_OFFSET, length $ROOT_LENGTH" "info"
 ROOT_FEATURES="^huge_file"
 
 for FEATURE in metadata_csum 64bit; do
-    if grep -q "$FEATURE" /etc/mke2fs.conf; then
-        ROOT_FEATURES="^$FEATURE,$ROOT_FEATURES"
-    fi
+	if grep -q "$FEATURE" /etc/mke2fs.conf; then
+		ROOT_FEATURES="^$FEATURE,$ROOT_FEATURES"
+	fi
 done
 
 mkdosfs -n boot -I -F 32 -v "$BOOT_DEV" > /dev/null

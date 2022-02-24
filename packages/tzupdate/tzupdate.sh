@@ -69,7 +69,7 @@ install() {
 
 	message "Enabling tzupdate service" "" "info"
 	rm -f /etc/systemd/system/multi-user.target.wants/tzupdate.service
-    ln -s /lib/systemd/system/tzupdate.service /etc/systemd/system/multi-user.target.wants/tzupdate.service
+	ln -s /lib/systemd/system/tzupdate.service /etc/systemd/system/multi-user.target.wants/tzupdate.service
 }
 
 install
