@@ -111,8 +111,8 @@ vendor: paths
 	rm -f build.log
 
 paths:
-	rm -fR mkdir -p cache/macos
-	rm -fR mkdir -p cache/vendor
+	rm -fR cache/macos
+	rm -fR cache/vendor
 	mkdir -p output
 	mkdir -p output/{config,debug,images,patch}
 	mkdir -p cache
