@@ -1,11 +1,12 @@
 {
     "name": "hoobs-image",
-    "version": "4.1.20",
-    "description": "HOOBS OS Image Builder",
+    "version": "4.2.0",
+    "description": "HOOBS Image Builder",
     "license": "GPL-3.0",
     "engines": {
+        "armbian": "22.02.0-trunk",
         "nodesource": "node_16.x",
-        "node": "16.13.2"
+        "node": "16.14.0"
     },
     "repository": {
         "type": "git",
@@ -25,4 +26,3 @@
         "mongodb": "^4.1.3"
     }
 }
- 

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-if /bin/launchctl list "org.hoobsd.hub" &> /dev/null; then
-    /bin/launchctl unload "/Library/LaunchDaemons/org.hoobsd.plist"
-fi

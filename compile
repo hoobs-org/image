@@ -1,0 +1,127 @@
+#!/bin/bash
+
+export SRC="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+grep -q "[[:space:]]" <<<"${SRC}" && { echo "\"${SRC}\" contains whitespace. Not supported. Aborting." >&2 ; exit 1 ; }
+
+cd "${SRC}" || exit
+
+if [[ "${ARMBIAN_ENABLE_CALL_TRACING}" == "yes" ]]; then
+	set -T # inherit return/debug traps
+	mkdir -p "${SRC}"/output/debug
+
+	echo -n "" > "${SRC}"/output/debug/calls.txt
+
+	trap 'echo "${BASH_LINENO[@]}|${BASH_SOURCE[@]}|${FUNCNAME[@]}" >> ${SRC}/output/debug/calls.txt ;' RETURN
+fi
+
+if [[ -f "${SRC}"/lib/general.sh ]]; then
+	source "${SRC}"/lib/general.sh
+else
+	echo "Error: missing build directory structure"
+	exit 255
+fi
+
+export BUILD_VERSION=$1
+
+if [[ "|${BUILD_VERSION}|" == "||" ]]; then
+	display_alert "Build version not defined" "" "wrn"
+
+	exit 1
+fi
+
+if [[ "${EUID}" == "0" ]] || [[ "${1}" == "vagrant" ]]; then
+	:
+else
+	display_alert "This script requires root privileges, trying to use sudo" "" "wrn"
+	sudo "${SRC}/compile" "$@"
+	exit $?
+fi
+
+shift
+
+if [ "$OFFLINE_WORK" == "yes" ]; then
+	echo -e "\n"
+	display_alert "* " "You are working offline."
+	display_alert "* " "Sources, time and host will not be checked"
+	echo -e "\n"
+	sleep 3s
+else
+	prepare_host_basic
+fi
+
+if [[ "${1}" == vagrant && -z "$(command -v vagrant)" ]]; then
+	display_alert "Vagrant not installed." "Installing"
+
+	sudo apt-get update
+	sudo apt-get install -y vagrant virtualbox
+fi
+
+mkdir -p "${SRC}"/userpatches
+
+if ! ls "${SRC}"/userpatches/{config-example.conf,config-vagrant.conf} 1> /dev/null 2>&1; then
+	if ls "${SRC}"/*.conf 1> /dev/null 2>&1; then
+		display_alert "Migrate config files to userpatches directory" "all *.conf" "info"
+
+        cp "${SRC}"/*.conf "${SRC}"/userpatches  || exit 1
+		rm "${SRC}"/*.conf
+
+		[[ ! -L "${SRC}"/userpatches/config-example.conf ]] && ln -fs config-example.conf "${SRC}"/userpatches/config-default.conf || exit 1
+	fi
+
+	display_alert "Create example config file using template" "config-default.conf" "info"
+
+	if [[ ! -f "${SRC}"/userpatches/config-example.conf ]]; then
+		cp "${SRC}"/config/templates/config-example.conf "${SRC}"/userpatches/config-example.conf || exit 1
+        ln -fs config-example.conf "${SRC}"/userpatches/config-default.conf || exit 1
+	fi
+
+	if [[ ! -f "${SRC}"/userpatches/config-vagrant.conf ]]; then
+		cp "${SRC}"/config/templates/config-vagrant.conf "${SRC}"/userpatches/config-vagrant.conf || exit 1
+	fi
+
+	if [[ ! -f "${SRC}"/userpatches/Vagrantfile ]]; then
+		cp "${SRC}"/config/templates/Vagrantfile "${SRC}"/userpatches/Vagrantfile || exit 1
+	fi
+fi
+
+if [[ -z "${CONFIG}" && -n "$1" && -f "${SRC}/userpatches/config-$1.conf" ]]; then
+	export CONFIG="userpatches/config-$1.conf"
+	shift
+fi
+
+if [[ -z "${CONFIG}" && -f "${SRC}/userpatches/config-default.conf" ]]; then
+	export CONFIG="userpatches/config-default.conf"
+fi
+
+export CONFIG_FILE="$(realpath "${CONFIG}")"
+
+if [[ ! -f "${CONFIG_FILE}" ]]; then
+	display_alert "Config file does not exist" "${CONFIG}" "error"
+
+	exit 254
+fi
+
+export CONFIG_PATH=$(dirname "${CONFIG_FILE}")
+
+source "${SRC}"/lib/extensions.sh
+
+display_alert "Using config file" "${CONFIG_FILE}" "info"
+
+pushd "${CONFIG_PATH}" > /dev/null || exit
+source "${CONFIG_FILE}"
+popd > /dev/null || exit
+
+[[ -z "${USERPATCHES_PATH}" ]] && USERPATCHES_PATH="${CONFIG_PATH}"
+
+while [[ "${1}" == *=* ]]; do
+	parameter=${1%%=*}
+	value=${1##*=}
+
+	shift
+
+	display_alert "Command line: setting $parameter to" "${value:-(empty)}" "info"
+	eval "export $parameter=\"$value\""
+done
+
+source "${SRC}"/lib/main.sh

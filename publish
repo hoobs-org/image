@@ -40,9 +40,9 @@ function execLocal(command, options) {
 
 function createRelease(title, notes, beta) {
     if (beta) {
-        execLocal(`gh release create v${image.version} ${join(__dirname, "builds", `hoobs*-v${image.version}-*.*`)} -p -t '${title} ${image.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
+        execLocal(`gh release create v${image.version} ${join(__dirname, "output/images", `hoobs*-v${image.version}-*.*`)} -p -t '${title} ${image.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
     } else {
-        execLocal(`gh release create v${image.version} ${join(__dirname, "builds", `hoobs*-v${image.version}-*.*`)} -t '${title} ${image.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
+        execLocal(`gh release create v${image.version} ${join(__dirname, "output/images", `hoobs*-v${image.version}-*.*`)} -t '${title} ${image.version}' -n '${notes}'`, { cwd: __dirname, stdio: "inherit" });
     }
 }
 
@@ -160,7 +160,7 @@ Program.command("published [branch]")
             { package: "console", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "network", method: "npm", arch: "all" },
             { package: "pam", method: "npm", arch: "amd64, arm64, armhf" },
-            { package: "image", arch: "arm64, armhf" },
+            { package: "image", arch: "all" },
             { package: "vendor", method: "apt", arch: "all" },
             { package: "deconz", method: "apt", arch: "amd64, arm64, armhf" },
             { package: "hyperion", method: "apt", arch: "amd64, arm64, armhf" },
@@ -231,10 +231,16 @@ Program.command("edge")
             version: image.version,
             published: new Date(),
             latest: true,
-            download_box_armhf: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-box-v${image.version}-armhf.xz`,
-            download_box_arm64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-box-v${image.version}-arm64.xz`,
-            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-armhf.xz`,
-            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-arm64.xz`,
+			download_box_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-box.xz`,
+			download_box_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-box.xz`,
+			download_box_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-box.xz`,
+			download_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-sdcard.xz`,
+			download_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-sdcard.xz`,
+			download_orangepizeroplus: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizeroplus-sdcard.xz`,
+			download_orangepizero: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizero-sdcard.xz`,
+			download_rock64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rock64-sdcard.xz`,
+			download_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-sdcard.xz`,
+			download_tinkerboard: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-tinkerboard-sdcard.xz`,
             download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
             beta: true,
         });
@@ -262,10 +268,16 @@ Program.command("stable")
             version: image.version,
             published: new Date(),
             latest: true,
-            download_box_armhf: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-box-v${image.version}-armhf.xz`,
-            download_box_arm64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-box-v${image.version}-arm64.xz`,
-            download_armhf: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-armhf.xz`,
-            download_arm64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-arm64.xz`,
+            download_box_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-box.xz`,
+			download_box_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-box.xz`,
+			download_box_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-box.xz`,
+			download_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-sdcard.xz`,
+			download_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-sdcard.xz`,
+			download_orangepizeroplus: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizeroplus-sdcard.xz`,
+			download_orangepizero: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizero-sdcard.xz`,
+			download_rock64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rock64-sdcard.xz`,
+			download_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-sdcard.xz`,
+			download_tinkerboard: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-tinkerboard-sdcard.xz`,
             download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
             beta: false,
         });

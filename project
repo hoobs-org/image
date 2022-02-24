@@ -1,53 +1,35 @@
 #!/bin/bash
 
-COUNT=0
-
 version() {
-    case $1 in
-        edge )
-            echo "$(./publish released edge)"
-            ;;
+	case $1 in
+		armbian )
+			echo `node -e 'console.log(require("./package.json").engines.armbian)'`
+			;;
 
-        stable )
-            echo "$(./publish released stable)"
-            ;;
+		nodesource )
+			echo `node -e 'console.log(require("./package.json").engines.nodesource)'`
+			;;
 
-        nodesource )
-            echo `node -e 'console.log(require("./package.json").engines.nodesource)'`
-            ;;
+		node )
+			echo `node -e 'console.log(require("./package.json").engines.node)'`
+			;;
 
-        node )
-            echo `node -e 'console.log(require("./package.json").engines.node)'`
-            ;;
-
-        * )
-            echo `node -e 'console.log(require("./package.json").version)'`
-            ;;
-    esac
+		* )
+			echo `node -e 'console.log(require("./package.json").version)'`
+			;;
+	esac
 }
 
-image() {
-    if [[ $COUNT -gt 0 ]] ; then
-        echo "" >> build.log
-    fi
-
-    echo "$1 - $2 - $(date)" >> build.log
-    echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" >> build.log
-
-    make $1-version-$2.img.xz.sha256
-
-    echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" >> build.log
-
-    COUNT=$((COUNT+1))
+boards() {
+	for board in config/boards/*.conf; do
+		printf "$(head -2 "${board}" | tail -1 | sed 's/export //' | sed 's/BOARD_NAME="//' | sed 's/"//')\033[1;30m$(head -1 "${board}" | cut -d'#' -f2)\033[0m\n"
+	done
 }
 
 build() {
-    touch build.log
-    truncate -s 0 build.log
-
-    case $1 in
+	case $1 in
         vendor )
-            make hoobs-vendor
+            make vendor
             ;;
 
         package )
@@ -55,85 +37,63 @@ build() {
                 (cd ../ && ./project pull)
 
                 printf "\033[0;36mBuild package\033[0m\n"
-                make hoobs-package
-                make clean
+                make darwin
             fi
 
             ;;
 
-        box )
-            image "hoobs-box" "arm64"
-            image "hoobs-box" "armhf"
-            ;;
+		box )
+			make box
+			;;
 
-        card )
-            image "hoobs" "arm64"
-            ;;
+		card )
+			make card
+			;;
 
-        legacy )
-            image "hoobs" "armhf"
-            ;;
-
-        * )
-            image "hoobs-box" "arm64"
-            image "hoobs-box" "armhf"
-            image "hoobs" "arm64"
-            image "hoobs" "armhf"
-            ;;
-    esac
+		* )
+			./compile $(version)
+			;;
+	esac
 }
 
 rebuild() {
-    make clean
-    build
+	sudo make clean
+	build $@
 }
 
 publish() {
-    current=$(version)
-
     case $1 in
         stable | edge | bleeding )
-            reprepro -b ../repo/debian includedeb $1 builds/hbs-vendor-$current-hoobs-all.deb
+            reprepro -b ../repo/debian includedeb $1 output/packages/hbs-vendor-$(version)-hoobs-all.deb
             ;;
     esac
 }
 
 case $1 in
-    version )
-        shift
+	version )
+		shift
 
-        version $@
-        ;;
+		version $@
+		;;
 
-    build )
-        shift
+	boards )
+		boards
+		;;
 
-        build $@
-        ;;
+	build )
+		shift
 
-    rebuild )
-        rebuild
-        ;;
+		build $@
+		;;
 
-    publish )
-        shift
+	rebuild )
+		rebuild
+		;;
 
-        case $1 in
-            vendor )
-                shift
+	publish )
+		;;
 
-                publish $@
-                ;;
-
-            * )
-                gh auth login
-                ./publish $@
-                ;;
-        esac
-
-        ;;
-
-    clean )
-        make clean
-        ;;
+	clean )
+		sudo make clean
+		;;
 esac
