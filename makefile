@@ -26,7 +26,7 @@ darwin: paths
 	chmod -R 755 cache/macos/darwin/scripts
 	chmod -R 755 cache/macos/darwin/
 	mkdir -p cache/macos/packages
-	cat config/distribution | \
+	cat config/darwin/distribution | \
 	sed "s/__NODE_VERSION__/$(NODE_VERSION)/g" | \
 	sed "s/__CLI_VERSION__/$(CLI_VERSION)/g" | \
 	sed "s/__HOOBSD_VERSION__/$(HOOBSD_VERSION)/g" | \
@@ -87,7 +87,7 @@ darwin: paths
 vendor: paths
 	mkdir -p cache/vendor/dist
 	mkdir -p cache/vendor/dist/DEBIAN
-	cat config/control | \
+	cat config/motd/control | \
 	sed "s/__VERSION__/$(shell project version)/" | \
 	sed "s/__ARCH__/all/" > cache/vendor/dist/DEBIAN/control
 	mkdir -p cache/vendor/dist/etc
@@ -96,8 +96,8 @@ vendor: paths
 	cp config/motd/issue cache/vendor/dist/etc/hbs-issue
 	cp config/motd/10-uname cache/vendor/dist/etc/update-motd.d/hbs-uname
 	cp config/motd/20-network cache/vendor/dist/etc/update-motd.d/
-	cp config/preinst cache/vendor/dist/DEBIAN/
-	cp config/postinst cache/vendor/dist/DEBIAN/
+	cp config/motd/preinst cache/vendor/dist/DEBIAN/
+	cp config/motd/postinst cache/vendor/dist/DEBIAN/
 	chmod 644 cache/vendor/dist/etc/hbs-motd
 	chmod 644 cache/vendor/dist/etc/hbs-issue
 	chmod 755 cache/vendor/dist/etc/update-motd.d/hbs-uname
