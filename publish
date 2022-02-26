@@ -234,14 +234,14 @@ Program.command("edge")
 			download_box_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-box.xz`,
 			download_box_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-box.xz`,
 			download_box_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-box.xz`,
+			download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
 			download_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-sdcard.xz`,
 			download_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-sdcard.xz`,
-			download_orangepizeroplus: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizeroplus-sdcard.xz`,
 			download_orangepizero: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizero-sdcard.xz`,
+			download_orangepizeroplus: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizeroplus-sdcard.xz`,
 			download_rock64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rock64-sdcard.xz`,
 			download_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-sdcard.xz`,
 			download_tinkerboard: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-tinkerboard-sdcard.xz`,
-            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
             beta: true,
         });
 
@@ -271,14 +271,14 @@ Program.command("stable")
             download_box_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-box.xz`,
 			download_box_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-box.xz`,
 			download_box_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-box.xz`,
+			download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
 			download_bananapim2ultra: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapim2ultra-sdcard.xz`,
 			download_bananapipro: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-bananapipro-sdcard.xz`,
-			download_orangepizeroplus: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizeroplus-sdcard.xz`,
 			download_orangepizero: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizero-sdcard.xz`,
+			download_orangepizeroplus: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-orangepizeroplus-sdcard.xz`,
 			download_rock64: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rock64-sdcard.xz`,
 			download_rpi: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-rpi-sdcard.xz`,
 			download_tinkerboard: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-tinkerboard-sdcard.xz`,
-            download_darwin: `https://github.com/hoobs-org/image/releases/download/v${image.version}/hoobs-v${image.version}-darwin.pkg`,
             beta: false,
         });
 
