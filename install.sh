@@ -193,7 +193,7 @@ users() {
 
 	message "Adding HOOBS user" "" "info"
 
-	if ! id -u service > /dev/null 2>&1; then
+	if ! id -u hoobs > /dev/null 2>&1; then
 		adduser --gecos hoobs --disabled-password hoobs > /dev/null 2>&1
 	fi
 
