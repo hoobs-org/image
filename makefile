@@ -21,7 +21,7 @@ darwin: paths
 	$(eval CLI_VERSION := $(shell ../cli/project version))
 	$(eval HOOBSD_VERSION := $(shell ../hoobsd/project version))
 	$(eval GUI_VERSION := $(shell ../gui/project version))
-	cp -r config/darwin cache/macos/
+	cp -r config/darwin/rootfs cache/macos/darwin
 	chmod -R 755 cache/macos/darwin/scripts
 	chmod -R 755 cache/macos/darwin/
 	mkdir -p cache/macos/packages
