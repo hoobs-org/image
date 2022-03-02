@@ -1,20 +1,20 @@
-card: paths
+card-%: paths
 	$(eval BUILD_VERSION := $(shell project version))
 	$(eval NODE_REPO := $(shell project version nodesource))
-	./compile $(BUILD_VERSION) BOARD=bananapim2ultra IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=bananapipro IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=orangepizero IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=orangepizeroplus IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=rock64 IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=tinkerboard IMG_TYPE=sdcard BRANCH=legacy RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=rpi IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
+	./compile $(BUILD_VERSION) BOARD=bananapim2ultra IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
+	./compile $(BUILD_VERSION) BOARD=bananapipro IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
+	./compile $(BUILD_VERSION) BOARD=orangepizero IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
+	./compile $(BUILD_VERSION) BOARD=orangepizeroplus IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
+	./compile $(BUILD_VERSION) BOARD=rock64 IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
+	./compile $(BUILD_VERSION) BOARD=tinkerboard IMG_TYPE=sdcard BRANCH=legacy RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
+	./compile $(BUILD_VERSION) BOARD=rpi IMG_TYPE=sdcard BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst card-,,$@)
 
-box: paths
+box-%: paths
 	$(eval BUILD_VERSION := $(shell project version))
 	$(eval NODE_REPO := $(shell project version nodesource))
-	./compile $(BUILD_VERSION) BOARD=bananapim2ultra IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=bananapipro IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
-	./compile $(BUILD_VERSION) BOARD=rpi IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO)
+	./compile $(BUILD_VERSION) BOARD=bananapim2ultra IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst box-,,$@)
+	./compile $(BUILD_VERSION) BOARD=bananapipro IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst box-,,$@)
+	./compile $(BUILD_VERSION) BOARD=rpi IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst box-,,$@)
 
 darwin: paths
 	$(eval BUILD_VERSION := $(shell project version))
@@ -114,9 +114,21 @@ paths:
 	rm -fR cache/macos
 	rm -fR cache/vendor
 	mkdir -p output
-	mkdir -p output/{config,debug,images,patch}
+	mkdir -p output/config
+	mkdir -p output/debug
+	mkdir -p output/images
+	mkdir -p output/patch
 	mkdir -p cache
-	mkdir -p cache/{work,sources,hash,hash-beta,macos,packages,toolchain,utility,rootfs,vendor}
+	mkdir -p cache/work
+	mkdir -p cache/sources
+	mkdir -p cache/hash
+	mkdir -p cache/hash-beta
+	mkdir -p cache/macos
+	mkdir -p cache/packages
+	mkdir -p cache/toolchain
+	mkdir -p cache/utility
+	mkdir -p cache/rootfs
+	mkdir -p cache/vendor
 
 clean:
 	rm -fR .tmp

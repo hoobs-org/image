@@ -119,7 +119,7 @@ customize_image()
 	[[ -f $SRC/install-host.sh ]] && source "$SRC"/install-host.sh
 
 	cp "$SRC"/packages/tzupdate/tzupdate.sh "${SDCARD}"/tmp/tzupdate.sh
-	chroot "${SDCARD}" /bin/bash -c "/tmp/tzupdate.sh $BUILD_VERSION $RELEASE $BOARD $NODE_REPO $IMG_TYPE $BOOT_METHOD"
+	chroot "${SDCARD}" /bin/bash -c "/tmp/tzupdate.sh"
 	cp "$SRC"/packages/tzupdate/tzupdate.py "${SDCARD}"/usr/lib/python3.9/tzupdate.py
 
 	call_extension_method "pre_customize_image" "image_tweaks_pre_customize" << 'PRE_CUSTOMIZE_IMAGE'
@@ -137,7 +137,7 @@ PRE_CUSTOMIZE_IMAGE
 
 	display_alert "Calling image customization script" "install.sh" "info"
 
-	chroot "${SDCARD}" /bin/bash -c "/tmp/install.sh $BUILD_VERSION $RELEASE $BOARD $NODE_REPO $IMG_TYPE $BOOT_METHOD"
+	chroot "${SDCARD}" /bin/bash -c "/tmp/install.sh $RELEASE $NODE_REPO $HOOBS_REPO $IMG_TYPE"
 	CUSTOMIZE_IMAGE_RC=$?
 	umount -i "${SDCARD}"/tmp/overlay >/dev/null 2>&1
 	mountpoint -q "${SDCARD}"/tmp/overlay || rm -r "${SDCARD}"/tmp/overlay

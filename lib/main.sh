@@ -115,25 +115,12 @@ export LINUXFAMILY="${BOARDFAMILY}"
 
 [[ -z $KERNEL_TARGET && $BOOT_METHOD == uboot ]] && exit_with_error "Board configuration does not define valid kernel config"
 
-if [[ -z $IMG_TYPE ]]; then
-	options+=("sdcard" "Build image for SD cards")
-	options+=("box" "Build image for the HOOBS Box")
-
-	IMG_TYPE=$(DIALOGRC="${SRC}/config/dialog.conf" dialog --stdout --keep-tite --title "Choose a build option" --backtitle "$BACKTITLE" --menu "Select the image build type" 50 150 $((50 - 8)) "${options[@]}")
-
-	unset options
-
-	[[ -z $IMG_TYPE ]] && exit_with_error "No option selected"
-fi
-
-export IMG_TYPE
-
 if [[ -z $BRANCH && $BOOT_METHOD == uboot ]]; then
 	options=()
 
-	[[ $KERNEL_TARGET == *current* ]] && options+=("current" "Recommended")
-	[[ $KERNEL_TARGET == *legacy* ]] && options+=("legacy" "Old stable")
-	[[ $KERNEL_TARGET == *edge* ]] && options+=("edge" "Bleeding edge")
+	[[ $KERNEL_TARGET == *current* ]] && options+=("current" "Current Linux kernel")
+	[[ $KERNEL_TARGET == *legacy* ]] && options+=("legacy" "Legacy Linux kernel")
+	[[ $KERNEL_TARGET == *edge* ]] && options+=("edge" "Latest Linux kernel")
 
 	if [[ "${#options[@]}" == 2 ]]; then
 		BRANCH="${options[0]}"
@@ -177,6 +164,32 @@ if [[ -z $NODE_REPO ]]; then
 fi
 
 export NODE_REPO
+
+if [[ -z $HOOBS_REPO ]]; then
+	options+=("stable" "Current HOOBS repository")
+	options+=("edge" "Edge HOOBS repository")
+
+	HOOBS_REPO=$(DIALOGRC="${SRC}/config/dialog.conf" dialog --stdout --keep-tite --title "Choose a repository" --backtitle "$BACKTITLE" --menu "Select the HOOBS repository" 50 150 $((50 - 8)) "${options[@]}")
+
+	unset options
+
+	[[ -z $HOOBS_REPO ]] && exit_with_error "No option selected"
+fi
+
+export HOOBS_REPO
+
+if [[ -z $IMG_TYPE ]]; then
+	options+=("sdcard" "Build image for SD cards")
+	options+=("box" "Build image for the HOOBS Box")
+
+	IMG_TYPE=$(DIALOGRC="${SRC}/config/dialog.conf" dialog --stdout --keep-tite --title "Choose an image type" --backtitle "$BACKTITLE" --menu "Select the image build type" 50 150 $((50 - 8)) "${options[@]}")
+
+	unset options
+
+	[[ -z $IMG_TYPE ]] && exit_with_error "No option selected"
+fi
+
+export IMG_TYPE
 
 if [[ $BOOT_METHOD == uboot ]]; then
 	source "${SRC}"/lib/configuration.sh

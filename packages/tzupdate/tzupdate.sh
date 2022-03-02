@@ -1,12 +1,5 @@
 #!/bin/bash
 
-BUILD_VERSION=$1
-RELEASE=$2
-BOARD=$3
-NODE_REPO=$4
-IMG_TYPE=$5
-BOOT_METHOD=$6
-
 message()
 {
 	local tmp=""

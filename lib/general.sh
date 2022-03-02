@@ -968,7 +968,19 @@ prepare_host_raspi() {
 		fi
 	fi
 
-	mkdir -p "${DEST}"/{config,debug,images,patch} "${SRC}"/cache/{work,sources,hash,hash-beta,macos,toolchain,utility,rootfs} "${SRC}"/.tmp
+	mkdir -p "${DEST}"/config
+	mkdir -p "${DEST}"/debug
+	mkdir -p "${DEST}"/images
+	mkdir -p "${DEST}"/patch
+	mkdir -p "${SRC}"/cache/work
+	mkdir -p "${SRC}"/cache/sources
+	mkdir -p "${SRC}"/cache/hash
+	mkdir -p "${SRC}"/cache/hash-beta
+	mkdir -p "${SRC}"/cache/macos
+	mkdir -p "${SRC}"/cache/toolchain
+	mkdir -p "${SRC}"/cache/utility
+	mkdir -p "${SRC}"/cache/rootfs
+	mkdir -p "${SRC}"/.tmp
 
 	local freespace=$(findmnt --target "${SRC}" -n -o AVAIL -b 2>/dev/null)
 
@@ -1093,7 +1105,9 @@ prepare_host()
 			ntpdate -s "${NTP_SERVER:-pool.ntp.org}"
 		fi
 
-		mkdir -p "${SRC}"/{cache,output} "${USERPATCHES_PATH}"
+		mkdir -p "${SRC}"/cache
+		mkdir -p "${SRC}"/output
+		mkdir -p "${USERPATCHES_PATH}"
 
 		if [[ -n $SUDO_USER ]]; then
 			chgrp --quiet sudo cache output "${USERPATCHES_PATH}"
@@ -1102,7 +1116,22 @@ prepare_host()
 			find "${SRC}"/output "${USERPATCHES_PATH}" -type d ! -perm -g+w,g+s -exec chmod --quiet g+w,g+s {} \;
 		fi
 
-		mkdir -p "${DEST}"/debs-beta/extra "${DEST}"/debs/extra "${DEST}"/{config,debug,images,patch} "${USERPATCHES_PATH}"/overlay "${SRC}"/cache/{work,sources,hash,hash-beta,macos,toolchain,utility,rootfs} "${SRC}"/.tmp
+		mkdir -p "${DEST}"/debs-beta/extra
+		mkdir -p "${DEST}"/debs/extra
+		mkdir -p "${DEST}"/config
+		mkdir -p "${DEST}"/debug
+		mkdir -p "${DEST}"/images
+		mkdir -p "${DEST}"/patch
+		mkdir -p "${USERPATCHES_PATH}"/overlay
+		mkdir -p "${SRC}"/cache/work
+		mkdir -p "${SRC}"/cache/sources
+		mkdir -p "${SRC}"/cache/hash
+		mkdir -p "${SRC}"/cache/hash-beta
+		mkdir -p "${SRC}"/cache/macos
+		mkdir -p "${SRC}"/cache/toolchain
+		mkdir -p "${SRC}"/cache/utility
+		mkdir -p "${SRC}"/cache/rootfs
+		mkdir -p "${SRC}"/.tmp
 
 		if [[ $(dpkg --print-architecture) == amd64 ]]; then
 			if [[ "${SKIP_EXTERNAL_TOOLCHAINS}" != "yes" ]]; then

@@ -1,11 +1,9 @@
 #!/bin/bash
 
-BUILD_VERSION=$1
-RELEASE=$2
-BOARD=$3
-NODE_REPO=$4
-IMG_TYPE=$5
-BOOT_METHOD=$6
+RELEASE=$1
+NODE_REPO=$2
+HOOBS_REPO=$3
+IMG_TYPE=$4
 
 message()
 {
@@ -175,7 +173,7 @@ setup() {
 	echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list > /dev/null 2>&1
 	echo "" | tee -a /etc/apt/sources.list.d/yarn.list > /dev/null 2>&1
 
-	echo "deb [signed-by=/usr/share/keyrings/hoobs.gpg] https://dl.hoobs.org/debian/ stable main" | tee /etc/apt/sources.list.d/hoobs.list > /dev/null 2>&1
+	echo "deb [signed-by=/usr/share/keyrings/hoobs.gpg] https://dl.hoobs.org/debian/ ${HOOBS_REPO} main" | tee /etc/apt/sources.list.d/hoobs.list > /dev/null 2>&1
 	echo "" | tee -a /etc/apt/sources.list.d/hoobs.list > /dev/null 2>&1
 
 	apt-get update

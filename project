@@ -43,11 +43,11 @@ build() {
 			;;
 
 		box )
-			make box
+			make box-$2
 			;;
 
 		card )
-			make card
+			make card-$2
 			;;
 
 		* )

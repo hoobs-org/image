@@ -212,7 +212,7 @@ Program.command("released <branch>")
     });
 
 Program.command("edge")
-    .description("publish hoobs desktop")
+    .description("publish hoobs image")
     .action(async () => {
         const client = new MongoClient(credentials.db, { useUnifiedTopology: true });
 
@@ -249,7 +249,7 @@ Program.command("edge")
     });
 
 Program.command("stable")
-    .description("publish hoobs desktop")
+    .description("publish hoobs image")
     .action(async () => {
         const client = new MongoClient(credentials.db, { useUnifiedTopology: true });
 
