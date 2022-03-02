@@ -13,7 +13,6 @@ box-%: paths
 	$(eval BUILD_VERSION := $(shell project version))
 	$(eval NODE_REPO := $(shell project version nodesource))
 	./compile $(BUILD_VERSION) BOARD=bananapim2ultra IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst box-,,$@)
-	./compile $(BUILD_VERSION) BOARD=bananapipro IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst box-,,$@)
 	./compile $(BUILD_VERSION) BOARD=rpi IMG_TYPE=box BRANCH=current RELEASE=bullseye NODE_REPO=$(NODE_REPO) HOOBS_REPO=$(subst box-,,$@)
 
 darwin: paths
