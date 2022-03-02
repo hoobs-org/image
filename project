@@ -63,9 +63,20 @@ rebuild() {
 
 publish() {
 	case $1 in
-		stable | edge | bleeding )
-			reprepro -b ../repo/debian includedeb $1 output/packages/hbs-vendor-$(version)-hoobs-all.deb
+		vendor )
+			case $2 in
+				stable | edge | bleeding )
+					reprepro -b ../repo/debian includedeb $1 output/packages/hbs-vendor-$(version)-hoobs-all.deb
+					;;
+			esac
 			;;
+
+		image )
+			case $2 in
+				stable | edge | bleeding )
+					./publish $2
+					;;
+			esac
 	esac
 }
 
@@ -85,10 +96,13 @@ case $1 in
 		;;
 
 	rebuild )
-		rebuild
+		shift
+		rebuild $@
 		;;
 
 	publish )
+		shift
+		publish $@
 		;;
 
 	clean )
