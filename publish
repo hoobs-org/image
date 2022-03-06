@@ -278,14 +278,12 @@ Program.command("stable")
             beta: false,
         });
 
-        const hoobsd = JSON.parse(readFileSync(join(__dirname, "../hoobsd/package.json")).toString());
-
         await releases.updateMany({ application: "hoobsd", latest: true, beta: false }, { $set: { latest: false } });
-        await releases.deleteMany({ application: "hoobsd", version: hoobsd.version, beta: false });
+        await releases.deleteMany({ application: "hoobsd", version: image.version, beta: false });
 
         await releases.insertOne({
             application: "hoobsd",
-            version: hoobsd.version,
+            version: image.version,
             published: new Date(),
             latest: true,
             beta: false,
