@@ -138,7 +138,7 @@ availability() {
 }
 
 prerequisites() {
-	PREREQUISITES=" ca-certificates libgnutls30 git make gcc g++ avahi-daemon avahi-utils"
+	PREREQUISITES=" ca-certificates libgnutls30 git make gcc g++ avahi-daemon avahi-utils ntp"
 
 	if [ ! -e /usr/lib/apt/methods/https ]; then
 		PREREQUISITES="${PREREQUISITES} apt-transport-https"
