@@ -6,7 +6,7 @@ HOOBS OS build utility.
 This build tool requires some packages to be installed. This also only works on a Debian system updated to the latest version.
 
 ```
-sudo apt install vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools
+sudo apt install vmdb2 dosfstools qemu-utils qemu-user-static debootstrap binfmt-support time kpartx bmap-tools rsync bc zerofree pixz
 ```
 
 And just incase you forget sudo when building.
