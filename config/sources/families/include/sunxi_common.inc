@@ -9,6 +9,7 @@ LINUXFAMILY=sunxi
 UBOOT_FW_ENV='0x88000,0x20000' # /etc/fw_env.config offset and env size
 ASOUND_STATE='asound.state.sunxi-next'
 GOVERNOR=ondemand
+SKIP_BOOTSPLASH=yes
 
 case $BRANCH in
 
@@ -19,8 +20,12 @@ case $BRANCH in
 esac
 
 case "$KERNEL_VERSION_LEVEL" in
-
-	5.10|5.15|5.16)
+	5.15)
+                KERNELSOURCE=$MAINLINE_KERNEL_SOURCE
+                KERNELSOURCENAME='name=origin'
+                KERNELBRANCH="tag:v5.15.84"
+        ;;
+	5.10|5.16)
 		KERNELSOURCE=$MAINLINE_KERNEL_SOURCE
 		KERNELSOURCENAME='name=origin'
 		KERNELBRANCH="branch:linux-${KERNEL_VERSION_LEVEL}.y"
