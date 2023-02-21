@@ -252,19 +252,19 @@ users
 
 case $IMG_TYPE in
 	sdcard)
-		message "Configuring image" "SD Card" "info"
+		message "Configuring image" "SD Card RPI" "info"
 
 		echo "ID=card" | tee /etc/hoobs > /dev/null 2>&1
-		echo "MODEL=HSLF-2" | tee -a /etc/hoobs > /dev/null 2>&1
+		echo "MODEL=SD Card" | tee -a /etc/hoobs > /dev/null 2>&1
 		echo "SKU=7-45114-12419-7" | tee -a /etc/hoobs > /dev/null 2>&1
 		echo "" | tee -a /etc/hoobs > /dev/null 2>&1
 		;;
 
 	box)
-		message "Configuring image" "HOOBS Box" "info"
+		message "Configuring image" "HOOBS Box HSLF-2" "info"
 
 		echo "ID=box" | tee /etc/hoobs > /dev/null 2>&1
-		echo "MODEL=HSLF-1" | tee -a /etc/hoobs > /dev/null 2>&1
+		echo "MODEL=HSLF-2" | tee -a /etc/hoobs > /dev/null 2>&1
 		echo "SKU=7-45114-12418-0" | tee -a /etc/hoobs > /dev/null 2>&1
 		echo "" | tee -a /etc/hoobs > /dev/null 2>&1
 		;;
